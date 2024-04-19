@@ -1,9 +1,13 @@
 package com.byjhona.folope.controller;
 
+import com.byjhona.folope.domain.filme.Filme;
+import com.byjhona.folope.domain.filme.FilmeDescobertaDTO;
 import com.byjhona.folope.service.TmdbAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/filme")
@@ -12,14 +16,14 @@ public class FilmeController {
     private TmdbAPI tmdbAPI;
 
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<String> mostrar(@PathVariable Long id){
-        String filme = tmdbAPI.buscarFilmePorId(id);
+    public ResponseEntity<Filme> mostrar(@PathVariable Long id){
+        Filme filme = tmdbAPI.buscarFilmePorId(id);
         return ResponseEntity.ok().body(filme);
     }
     @GetMapping("/buscar")
-    public ResponseEntity<String> listar(@RequestParam(required = false) String sortear,
-                                         @RequestParam(required = false) String genero,
-                                         @RequestParam(required = false) String idioma){
+    public ResponseEntity<List<FilmeDescobertaDTO>> listar(@RequestParam(required = false) String sortear,
+                                                           @RequestParam(required = false) String genero,
+                                                           @RequestParam(required = false) String idioma){
         String parametros = "";
 
         if(sortear != null){
@@ -31,7 +35,7 @@ public class FilmeController {
         if(idioma != null){
             parametros+= "language=" + idioma + "&";
         }
-        String filmes = tmdbAPI.buscarFilmesPorParametros(parametros);
+        List<FilmeDescobertaDTO> filmes = tmdbAPI.buscarFilmesDescoberta(parametros);
         return ResponseEntity.ok().body(filmes);
     }
 }
