@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,9 +25,7 @@ public class Usuario {
     @Column(name = "senha")
     private String senha;
 
+
     public Usuario(UsuarioDTO usuarioDTO) {
-        this.nome = usuarioDTO.nome();
-        this.email = usuarioDTO.email();
-        this.senha = usuarioDTO.senha();;
     }
 }

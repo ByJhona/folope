@@ -2,6 +2,10 @@ package com.byjhona.folope.domain.filme;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record FilmeDescobertaDTO(
