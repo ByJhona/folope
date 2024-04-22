@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -36,7 +37,7 @@ public class TmdbAPI {
     }
     public Filme buscarFilmePorId(Long id){
         try{
-            String filmeString =  client.get().uri("/movie/" + id + "&language=pt-BR")
+            String filmeString =  client.get().uri("/movie/" + id + "?language=pt-BR")
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
@@ -52,9 +53,26 @@ public class TmdbAPI {
             throw new RuntimeException(e);
         }
     }
-    public List<FilmeDescobertaDTO> buscarFilmesDescoberta(String parametros){
+    public List<FilmeDescobertaDTO> buscarFilmesDescoberta( String parametros){
         try{
             String filmesString = client.get().uri("/discover/movie?" + parametros + "&language=pt-BR")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+            JsonNode raiz = json.readTree(filmesString);
+            JsonNode resultadosArray = raiz.path("results");
+
+            return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {});
+
+        }catch (WebClientResponseException e){
+            throw new RuntimeException("Erro ao encontrar filmes" + e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public List<FilmeDescobertaDTO> buscarFilmesDescoberta(){
+        try{
+            String filmesString = client.get().uri("/discover/movie?"+ "&language=pt-BR")
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
