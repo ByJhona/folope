@@ -13,7 +13,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Filme {
@@ -35,4 +34,27 @@ public class Filme {
     private int duracao;
     @JsonAlias("vote_average")
     private float nota;
+
+
+    public Filme(
+            Long id,
+            String titulo,
+            String urlCapaFundo,
+            String urlCapaPoster,
+            List<Genero> generos,
+            String sinopse,
+            String dataLancamento,
+            int duracao,
+            float nota
+    ) {
+        this.id = id;
+        this.titulo = titulo;
+        this.urlCapaFundo = "https://image.tmdb.org/t/p/original" + urlCapaFundo;
+        this.urlCapaPoster = "https://image.tmdb.org/t/p/original" + urlCapaPoster;
+        this.generos = generos;
+        this.sinopse = sinopse;
+        this.dataLancamento = dataLancamento;
+        this.duracao = duracao;
+        this.nota = nota;
+    }
 }

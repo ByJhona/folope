@@ -26,4 +26,23 @@ public record FilmeDescobertaDTO(
         @JsonAlias("vote_average")
         float nota
 ) {
+        public FilmeDescobertaDTO(
+                Long id,
+                String titulo,
+                String urlCapaFundo,
+                String urlCapaPoster,
+                int[] idGeneros,
+                String sinopse,
+                String dataLancamento,
+                float nota
+        ) {
+                this.id = id;
+                this.titulo = titulo;
+                this.urlCapaFundo = "https://image.tmdb.org/t/p/original" + urlCapaFundo;
+                this.urlCapaPoster = "https://image.tmdb.org/t/p/original" + urlCapaPoster;
+                this.idGeneros = idGeneros;
+                this.sinopse = sinopse;
+                this.dataLancamento = dataLancamento;
+                this.nota = nota;
+        }
 }

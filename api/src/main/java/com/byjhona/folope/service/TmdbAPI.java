@@ -61,7 +61,7 @@ public class TmdbAPI {
                     .block();
             JsonNode raiz = json.readTree(filmesString);
             JsonNode resultadosArray = raiz.path("results");
-
+            System.out.println(resultadosArray);
             return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {});
 
         }catch (WebClientResponseException e){
@@ -78,6 +78,7 @@ public class TmdbAPI {
                     .block();
             JsonNode raiz = json.readTree(filmesString);
             JsonNode resultadosArray = raiz.path("results");
+            System.out.println(resultadosArray);
 
             return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {});
 
