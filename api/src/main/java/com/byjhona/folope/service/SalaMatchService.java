@@ -9,6 +9,7 @@ import com.byjhona.folope.repository.SalaMatchRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -28,13 +29,17 @@ public class SalaMatchService {
         return new SalaMatchDTO(salaMatch);
     }
 
+    @Transactional
     public void escolherFilmesSala(Long idSalaMatch) {
-        List<FilmeDescobertaDTO> lista = tmdbAPI.buscarFilmesDescoberta();
-        for (FilmeDescobertaDTO item : lista) {
-            Long idFilme = item.id();
-            RelacSalaFilmeMatch relacSalaFilmeMatch = new RelacSalaFilmeMatch(idSalaMatch, idFilme);
-            relacSalaFilmeMatchRepository.save(relacSalaFilmeMatch);
-        }
+        Mono<List<FilmeDescobertaDTO>> lista = tmdbAPI.buscarFilmesDescoberta();
+
+        lista.subscribe(item -> {
+            for (FilmeDescobertaDTO t : item) {
+                Long idFilme = t.id();
+                RelacSalaFilmeMatch relacSalaFilmeMatch = new RelacSalaFilmeMatch(idSalaMatch, idFilme);
+                relacSalaFilmeMatchRepository.save(relacSalaFilmeMatch);
+            }
+        });
     }
 
     public SalaMatchDTO mostrar(Long id) {
@@ -42,7 +47,7 @@ public class SalaMatchService {
         return new SalaMatchDTO(salaMatch);
     }
 
-    public void deletar(Long id){
+    public void deletar(Long id) {
         salaMatchRepository.deleteById(id);
     }
 }

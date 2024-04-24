@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record FilmeDescobertaDTO(
         @JsonAlias("id")

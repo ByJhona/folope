@@ -1,14 +1,10 @@
 package com.byjhona.folope.controller;
 
-import com.byjhona.folope.domain.filme.Filme;
-import com.byjhona.folope.domain.filme.FilmeDescobertaDTO;
 import com.byjhona.folope.domain.sala_match.SalaMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatchDTO;
 import com.byjhona.folope.domain.sala_match.relac_sala_filme_match.RelacSalaFilmeMatch;
 import com.byjhona.folope.repository.RelacSalaFilmeMatchRepository;
-import com.byjhona.folope.repository.SalaMatchRepository;
 import com.byjhona.folope.service.SalaMatchService;
-import com.byjhona.folope.service.TmdbAPI;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
