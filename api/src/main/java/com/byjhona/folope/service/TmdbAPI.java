@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import net.bytebuddy.description.type.TypeList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.data.web.JsonPath;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -56,8 +57,9 @@ public class TmdbAPI {
     }
 
     public Mono<List<FilmeDescobertaDTO>> buscarFilmesDescoberta(String parametros) {
+        System.out.println(parametros);
         return client.get()
-                .uri("/discover/movie?" + parametros + "&language=pt-BR")
+                .uri("/discover/movie" + parametros)
                 .retrieve()
                 .bodyToMono(String.class)
                 .flatMap(filmesString -> {
@@ -73,9 +75,9 @@ public class TmdbAPI {
                 .onErrorResume(WebClientResponseException.class, e -> Mono.error(new RuntimeException("Erro ao encontrar filmes: " + e.getMessage())));
     }
 
-    public Mono<List<FilmeDescobertaDTO>> buscarFilmesDescoberta() {
+    public Mono<List<FilmeDescobertaDTO>> buscarFilmesRecomendacao(Long idFilme) {
         return client.get()
-                .uri("/discover/movie?" + "&language=pt-BR")
+                .uri("/movie/" + idFilme + "/recommendations?" + "language=pt-BR")
                 .retrieve()
                 .bodyToMono(String.class)
                 .flatMap(filmesString -> {

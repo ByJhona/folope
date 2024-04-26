@@ -27,5 +27,8 @@ public class Usuario {
 
 
     public Usuario(UsuarioDTO usuarioDTO) {
+        this.nome = usuarioDTO.nome();
+        this.email = usuarioDTO.email();
+        this.senha = usuarioDTO.senha();
     }
 }

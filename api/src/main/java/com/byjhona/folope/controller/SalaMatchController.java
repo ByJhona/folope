@@ -1,8 +1,8 @@
 package com.byjhona.folope.controller;
 
+import com.byjhona.folope.domain.relac_sala_filme_match.RelacSalaFilmeMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatchDTO;
-import com.byjhona.folope.domain.sala_match.relac_sala_filme_match.RelacSalaFilmeMatch;
 import com.byjhona.folope.repository.RelacSalaFilmeMatchRepository;
 import com.byjhona.folope.service.SalaMatchService;
 import jakarta.transaction.Transactional;
@@ -32,9 +32,10 @@ public class SalaMatchController {
         SalaMatchDTO salaMatchDTO = salaMatchService.mostrar(id);
         return ResponseEntity.ok().body(salaMatchDTO);
     }
+
     @GetMapping("/buscar/{id}/filmes")
     public List<RelacSalaFilmeMatch> mostrarFilmes(@PathVariable Long id) {
-        List<RelacSalaFilmeMatch> lista = relacSalaFilmeMatchRepository.encontrarFilmesSala(id);
+        List<RelacSalaFilmeMatch> lista = relacSalaFilmeMatchRepository.listarFilmesMatch(id);
         return lista;
     }
 

@@ -33,6 +33,13 @@ create table relac_usuario_genero_curtido(
     primary key(id)
 );
 
+create table relac_usuario_filme_curtido(
+    id SERIAL not null,
+    id_usuario integer not null,
+    id_filme integer not null,
+    primary key(id)
+);
+
 INSERT INTO usuario (id, nome, email, senha)
 VALUES
 (0, 'Jhonatan', 'jhonatan@gmail.com', '12345678'),

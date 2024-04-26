@@ -1,4 +1,4 @@
-package com.byjhona.folope.domain.sala_match.relac_sala_filme_match;
+package com.byjhona.folope.domain.relac_sala_filme_match;
 
 
 import com.byjhona.folope.domain.sala_match.SalaMatchDTO;
