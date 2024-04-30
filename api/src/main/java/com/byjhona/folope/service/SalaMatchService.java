@@ -1,5 +1,6 @@
 package com.byjhona.folope.service;
 
+import com.byjhona.folope.domain.filme.FilmeDTO;
 import com.byjhona.folope.domain.filme.FilmeDescobertaDTO;
 import com.byjhona.folope.domain.relac_sala_filme_match.RelacSalaFilmeMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatch;
@@ -12,9 +13,12 @@ import com.byjhona.folope.util.TratadorParametros;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +42,7 @@ public class SalaMatchService {
         return new SalaMatchDTO(salaMatch);
     }
 
+    // Fazer uma logica para nao colocar filmes duplicados
     @Transactional
     public void escolherFilmesSala(SalaMatch salaMatch) {
         Long idSalaMatch = salaMatch.getId();
@@ -75,11 +80,26 @@ public class SalaMatchService {
             filmesDescoberta = tmdbAPI.buscarFilmesDescoberta(genero);
             salvarFilmesNoBanco(filmesDescoberta, idSalaMatch);
         }
+        Mono<List<FilmeDescobertaDTO>> filmes = Mono.zip(filmesDescoberta, filmesRecomedacaoAnfitriao, filmesRecomedacaoHospede)
+                .flatMap(tuple -> {
+                    List<FilmeDescobertaDTO> concatenado = new ArrayList<FilmeDescobertaDTO>();
+                    List<FilmeDescobertaDTO> semDuplicados = new ArrayList<FilmeDescobertaDTO>();
+
+                    concatenado.addAll(tuple.getT1());
+                    concatenado.addAll(tuple.getT2());
+                    concatenado.addAll(tuple.getT3());
+
+
+                    semDuplicados = concatenado.stream().distinct().collect(Collectors.toList());
+                    Collections.shuffle(semDuplicados);
+                return Mono.just(semDuplicados.subList(0, 40));
+                });
+        filmes.subscribe(System.out::println);
     }
+
 
     private void salvarFilmesNoBanco(Mono<List<FilmeDescobertaDTO>> filmes, Long idSalaMatch) {
         filmes.subscribe(item -> {
-            System.out.println(item);
             for (FilmeDescobertaDTO t : item) {
                 Long idFilme = t.id();
                 RelacSalaFilmeMatch relacSalaFilmeMatch = new RelacSalaFilmeMatch(idSalaMatch, idFilme);

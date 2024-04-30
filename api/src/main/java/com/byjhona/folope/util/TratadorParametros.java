@@ -12,8 +12,11 @@ public class TratadorParametros {
         }
 
         parametros += "language=pt-BR";
+        int tamanho = parametros.length() - 1;
+        if(parametros.lastIndexOf("&") == tamanho){
+            parametros = parametros.substring(0, parametros.length() -1);
+        }
 
-        parametros = parametros.substring(0, parametros.length() -1);
         return parametros;
 
     }

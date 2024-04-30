@@ -1,7 +1,7 @@
 create table usuario(
     id SERIAL not null,
     nome varchar(100),
-    email varchar(100),
+    email varchar(100) unique,
     senha varchar(100),
 
     primary key(id)
@@ -40,12 +40,4 @@ create table relac_usuario_filme_curtido(
     primary key(id)
 );
 
-INSERT INTO usuario (id, nome, email, senha)
-VALUES
-(0, 'Jhonatan', 'jhonatan@gmail.com', '12345678'),
-(1, 'Felipe', 'felipe@icloud.com', '12345678');
 
-INSERT INTO sala_match (id, status_solicitacao, id_anfitriao, id_hospede)
-VALUES
-(0, 'Aceito', 0, 1),
-(1, 'Pendente', 1, 0);

@@ -12,7 +12,7 @@ public class UsuarioService {
     private RelacUsuarioFilmeCurtidoRepository relacUsuarioFilmeCurtidoRepository;
 
     public RelacUsuarioFilmeCurtido cadastrarFilmeCurtido(RelacUsuarioFilmeCurtido filmeCur) {
-        RelacUsuarioFilmeCurtido novoFilmeCur = new RelacUsuarioFilmeCurtido();
+        RelacUsuarioFilmeCurtido novoFilmeCur;
         if (!relacUsuarioFilmeCurtidoRepository.existeNoBanco(filmeCur)) {
             novoFilmeCur = relacUsuarioFilmeCurtidoRepository.save(filmeCur);
         } else {
