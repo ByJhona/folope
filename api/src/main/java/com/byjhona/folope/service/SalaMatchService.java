@@ -1,6 +1,5 @@
 package com.byjhona.folope.service;
 
-import com.byjhona.folope.domain.filme.FilmeDTO;
 import com.byjhona.folope.domain.filme.FilmeDescobertaDTO;
 import com.byjhona.folope.domain.relac_sala_filme_match.RelacSalaFilmeMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatch;
@@ -13,11 +12,9 @@ import com.byjhona.folope.util.TratadorParametros;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +33,7 @@ public class SalaMatchService {
     private RelacUsuarioFilmeCurtidoRepository filmeRepository;
 
     @Transactional
-    public SalaMatchDTO cadastrar(SalaMatch salaMatch) {
+    public SalaMatchDTO cadastrar(SalaMatch salaMatch) throws IOException {
         salaMatchRepository.save(salaMatch);
         escolherFilmesSala(salaMatch);
         return new SalaMatchDTO(salaMatch);
@@ -44,10 +41,29 @@ public class SalaMatchService {
 
     // Fazer uma logica para nao colocar filmes duplicados
     @Transactional
-    public void escolherFilmesSala(SalaMatch salaMatch) {
+    public void escolherFilmesSala(SalaMatch salaMatch) throws IOException {
         Long idSalaMatch = salaMatch.getId();
         Long idAnfitriao = salaMatch.getIdAnfitriao();
         Long idHospede = salaMatch.getIdHospede();
+        String generos = generoMatchParaParametro(idAnfitriao, idHospede);
+
+        Long recomendacaoAnfitriao = filmeRepository.sortearFilmeAleatorio(idAnfitriao);
+        Long recomendacaoHospede = filmeRepository.sortearFilmeAleatorio(idHospede);
+
+        List<FilmeDescobertaDTO> filmesRecomedacaoAnfitriao = tmdbAPI.buscarFilmesRecomendacao(recomendacaoAnfitriao);
+        List<FilmeDescobertaDTO> filmesRecomedacaoHospede = tmdbAPI.buscarFilmesRecomendacao(recomendacaoHospede);
+        List<FilmeDescobertaDTO> filmesDescoberta = tmdbAPI.buscarFilmesDescoberta(generos);
+        List<FilmeDescobertaDTO> filmesSala = new ArrayList<FilmeDescobertaDTO>();
+
+        filmesSala.addAll(filmesDescoberta);
+        filmesSala.addAll(filmesRecomedacaoAnfitriao);
+        filmesSala.addAll(filmesRecomedacaoHospede);
+
+        List<FilmeDescobertaDTO> filmesTratadosSala = tratarListaFilmes(filmesSala);
+        salvarFilmesNoBanco(filmesTratadosSala, idSalaMatch);
+    }
+
+    private String generoMatchParaParametro(Long idAnfitriao, Long idHospede) {
         List<Long> generosAnfitriao = generoRepository.generosCurtidos(idAnfitriao);
         List<Long> generosHospede = generoRepository.generosCurtidos(idHospede);
         List<Long> generosMatch = new ArrayList<>();
@@ -59,53 +75,35 @@ public class SalaMatchService {
         }
         String genero = generosMatch.stream().map(String::valueOf).collect(Collectors.joining(","));
         genero = TratadorParametros.tratar(null, genero);
+        return genero;
 
-        Long recomendacaoAnfitriao = filmeRepository.sortearFilmeAleatorio(idAnfitriao);
-        Long recomendacaoHospede = filmeRepository.sortearFilmeAleatorio(idHospede);
+    }
 
-        Mono<List<FilmeDescobertaDTO>> filmesRecomedacaoAnfitriao = null;
-        Mono<List<FilmeDescobertaDTO>> filmesRecomedacaoHospede = null;
-        Mono<List<FilmeDescobertaDTO>> filmesDescoberta = null;
-
-        if (recomendacaoAnfitriao != null) {
-            filmesRecomedacaoAnfitriao = tmdbAPI.buscarFilmesRecomendacao(recomendacaoAnfitriao);
-            salvarFilmesNoBanco(filmesRecomedacaoAnfitriao, idSalaMatch);
-
+    private List<FilmeDescobertaDTO> tratarListaFilmes(List<FilmeDescobertaDTO> filmesLista) throws IOException {
+        int limiarFilmes = 80;
+        int maxTentativas = 5;
+        int maxFilmesRetornados = 50;
+        int quantFilmes = filmesLista.size();
+        List<FilmeDescobertaDTO> filmesTratados = filmesLista.stream().distinct().collect(Collectors.toList());
+        System.out.println(filmesTratados.size());
+        while (quantFilmes < limiarFilmes && maxTentativas > 0) {
+            List<FilmeDescobertaDTO> filmesExtras = tmdbAPI.buscarFilmesDescoberta();
+            filmesExtras = filmesExtras.stream().distinct().toList();
+            filmesTratados.addAll(filmesExtras);
+            quantFilmes = filmesTratados.size();
+            maxTentativas--;
         }
-        if (recomendacaoHospede != null) {
-            filmesRecomedacaoHospede = tmdbAPI.buscarFilmesRecomendacao(recomendacaoHospede);
-            salvarFilmesNoBanco(filmesRecomedacaoHospede, idSalaMatch);
-        }
-        if (!genero.isEmpty()) {
-            filmesDescoberta = tmdbAPI.buscarFilmesDescoberta(genero);
-            salvarFilmesNoBanco(filmesDescoberta, idSalaMatch);
-        }
-        Mono<List<FilmeDescobertaDTO>> filmes = Mono.zip(filmesDescoberta, filmesRecomedacaoAnfitriao, filmesRecomedacaoHospede)
-                .flatMap(tuple -> {
-                    List<FilmeDescobertaDTO> concatenado = new ArrayList<FilmeDescobertaDTO>();
-                    List<FilmeDescobertaDTO> semDuplicados = new ArrayList<FilmeDescobertaDTO>();
-
-                    concatenado.addAll(tuple.getT1());
-                    concatenado.addAll(tuple.getT2());
-                    concatenado.addAll(tuple.getT3());
-
-
-                    semDuplicados = concatenado.stream().distinct().collect(Collectors.toList());
-                    Collections.shuffle(semDuplicados);
-                return Mono.just(semDuplicados.subList(0, 40));
-                });
-        filmes.subscribe(System.out::println);
+        Collections.shuffle(filmesTratados);
+        return filmesTratados.subList(0, maxFilmesRetornados);
     }
 
 
-    private void salvarFilmesNoBanco(Mono<List<FilmeDescobertaDTO>> filmes, Long idSalaMatch) {
-        filmes.subscribe(item -> {
-            for (FilmeDescobertaDTO t : item) {
-                Long idFilme = t.id();
-                RelacSalaFilmeMatch relacSalaFilmeMatch = new RelacSalaFilmeMatch(idSalaMatch, idFilme);
-                relacSalaFilmeMatchRepository.save(relacSalaFilmeMatch);
-            }
-        });
+    private void salvarFilmesNoBanco(List<FilmeDescobertaDTO> filmes, Long idSalaMatch) {
+        for (FilmeDescobertaDTO t : filmes) {
+            Long idFilme = t.id();
+            RelacSalaFilmeMatch relacSalaFilmeMatch = new RelacSalaFilmeMatch(idSalaMatch, idFilme);
+            relacSalaFilmeMatchRepository.save(relacSalaFilmeMatch);
+        }
     }
 
     public SalaMatchDTO mostrar(Long id) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class SalaMatchController {
 
     @Transactional
     @PostMapping("/cadastrar")
-    public ResponseEntity<SalaMatchDTO> cadastrar(@RequestBody SalaMatch salaMatch) {
+    public ResponseEntity<SalaMatchDTO> cadastrar(@RequestBody SalaMatch salaMatch) throws IOException {
         SalaMatchDTO salaMatchDTO = salaMatchService.cadastrar(salaMatch);
         return ResponseEntity.ok().body(salaMatchDTO);
     }

@@ -3,29 +3,21 @@ package com.byjhona.folope.service;
 import com.byjhona.folope.domain.filme.FilmeDTO;
 import com.byjhona.folope.domain.filme.FilmeDescobertaDTO;
 import com.byjhona.folope.domain.genero.Genero;
-import com.byjhona.folope.exception.FilmeNaoEncontradoException;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.byjhona.folope.exception.NaoEncontradoException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import net.bytebuddy.description.type.TypeList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.data.web.JsonPath;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TmdbAPI {
-
     private final WebClient client;
     @Autowired
     private Gson gson;
@@ -42,72 +34,80 @@ public class TmdbAPI {
                 .build();
     }
 
-    public Mono<FilmeDTO> buscarFilmePorId(Long id) {
+    public FilmeDTO buscarFilmePorId(Long id) {
         try {
             return client.get().uri("/movie/" + id + "?language=pt-BR")
                     .retrieve()
-                    .bodyToMono(FilmeDTO.class);
-        } catch (WebClientResponseException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new FilmeNaoEncontradoException("O filme com id: " + id + " não foi encontrado");
-            } else {
-                throw new RuntimeException("Erro ao encontrar filme com id: " + e.getMessage());
-            }
+                    .bodyToMono(FilmeDTO.class)
+                    .block();
+        }catch (WebClientResponseException ex){
+            throw new NaoEncontradoException(id);
         }
     }
 
-    public Mono<List<FilmeDescobertaDTO>> buscarFilmesDescoberta(String parametros) {
+    public List<FilmeDescobertaDTO> buscarFilmesDescoberta(String parametros) {
         System.out.println(parametros);
-        return client.get()
+        String filmesString = client.get()
                 .uri("/discover/movie" + parametros)
                 .retrieve()
                 .bodyToMono(String.class)
-                .flatMap(filmesString -> {
-                    try {
-                        JsonNode raiz = json.readTree(filmesString);
-                        JsonNode resultadosArray = raiz.path("results");
-                        return Mono.just(json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
-                        }));
-                    } catch (IOException e) {
-                        return Mono.error(new RuntimeException(e));
-                    }
-                })
-                .onErrorResume(WebClientResponseException.class, e -> Mono.error(new RuntimeException("Erro ao encontrar filmes: " + e.getMessage())));
+                .block();
+
+        try {
+            JsonNode raiz = json.readTree(filmesString);
+            JsonNode resultadosArray = raiz.path("results");
+            return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
+            });
+        } catch (IOException ignored) {
+        }
+        return null;
     }
 
-    public Mono<List<FilmeDescobertaDTO>> buscarFilmesRecomendacao(Long idFilme) {
-        return client.get()
+    public List<FilmeDescobertaDTO> buscarFilmesDescoberta() {
+        String filmesString = client.get()
+                .uri("/discover/movie")
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        try {
+            JsonNode raiz = json.readTree(filmesString);
+            JsonNode resultadosArray = raiz.path("results");
+            return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
+            });
+        } catch (IOException ignored) {
+        }
+        return null;
+    }
+
+    public List<FilmeDescobertaDTO> buscarFilmesRecomendacao(Long idFilme) {
+        String filmesString = client.get()
                 .uri("/movie/" + idFilme + "/recommendations?" + "language=pt-BR")
                 .retrieve()
                 .bodyToMono(String.class)
-                .flatMap(filmesString -> {
-                    try {
-                        JsonNode raiz = json.readTree(filmesString);
-                        JsonNode resultadosArray = raiz.path("results");
-                        return Mono.just(json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
-                        }));
-                    } catch (IOException e) {
-                        return Mono.error(new RuntimeException(e));
-                    }
-                })
-                .onErrorResume(WebClientResponseException.class, e -> Mono.error(new RuntimeException("Erro ao encontrar filmes: " + e.getMessage())));
+                .block();
+        try {
+            JsonNode raiz = json.readTree(filmesString);
+            JsonNode resultadosArray = raiz.path("results");
+            return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
+            });
+        } catch (IOException ignored) {
+        }
+        return null;
     }
 
-    public Mono<List<Genero>> buscarListaDeGeneros() {
-
-        return client.get().uri("/genre/movie/list")
+    public List<Genero> buscarListaDeGeneros() {
+        String generosString = client.get().uri("/genre/movie/list")
                 .retrieve()
                 .bodyToMono(String.class)
-                .flatMap(data -> {
-                    try {
-                        JsonNode raiz = json.readTree(data);
-                        JsonNode resultadoArray = raiz.path("genres");
-                        return Mono.just(json.readValue(resultadoArray.traverse(), new TypeReference<List<Genero>>() {
-                        }));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-    }
+                .block();
+        try {
+            JsonNode raiz = json.readTree(generosString);
+            JsonNode resultadoArray = raiz.path("genres");
+            return json.readValue(resultadoArray.traverse(), new TypeReference<List<Genero>>() {
+            });
+        } catch (IOException ignored) {
 
+        }
+        return null;
+    }
 }

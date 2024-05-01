@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,8 +19,8 @@ public class GeneroController {
     private TmdbAPI tmdbAPI;
 
     @GetMapping("/buscar")
-    public ResponseEntity<Mono<List<Genero>>> buscar(){
-        Mono<List<Genero>> generos = tmdbAPI.buscarListaDeGeneros();
+    public ResponseEntity<List<Genero>> buscar() throws IOException {
+        List<Genero> generos = tmdbAPI.buscarListaDeGeneros();
         return ResponseEntity.ok().body(generos);
     }
 }
