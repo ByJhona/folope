@@ -6,13 +6,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonIncludeProperties({"sucesso", "status", "mensagem"})
-public class RelacaoExisteNoBancoException extends RuntimeException{
+public class NaoAutorizadoException extends RuntimeException{
     boolean sucesso = false;
-    int status = 406;
+    int status = 401;
     String mensagem;
-    public RelacaoExisteNoBancoException(){
-        this.mensagem = "O objeto já está cadastrado.";
+    public NaoAutorizadoException(){
+        this.mensagem = "O usuário não tem permissão para realizar ação.";
     }
 }

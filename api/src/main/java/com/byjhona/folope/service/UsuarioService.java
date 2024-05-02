@@ -16,7 +16,7 @@ public class UsuarioService {
         if (!relacUsuarioFilmeCurtidoRepository.existeNoBanco(filmeCur)) {
             novoFilmeCur = relacUsuarioFilmeCurtidoRepository.save(filmeCur);
         } else {
-            throw new RelacaoExisteNoBancoException(filmeCur.getId());
+            throw new RelacaoExisteNoBancoException();
         }
         return novoFilmeCur;
     }
