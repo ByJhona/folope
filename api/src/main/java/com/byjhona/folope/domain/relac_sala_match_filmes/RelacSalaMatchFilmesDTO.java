@@ -1,11 +1,9 @@
-package com.byjhona.folope.domain.relac_sala_filme_match;
+package com.byjhona.folope.domain.relac_sala_match_filmes;
 
 
 import jakarta.persistence.Column;
 
-import java.util.List;
-
-public record RelacSalaFilmeMatchDTO(
+public record RelacSalaMatchFilmesDTO(
 
         @Column(name = "id_sala_match")
         Long idSalaMatch,

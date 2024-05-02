@@ -22,13 +22,11 @@ public class SalaMatch {
     private Long idAnfitriao;
     @Column(name = "id_hospede")
     private Long idHospede;
-    @Enumerated(EnumType.STRING)
     @Column(name = "status_solicitacao")
-    private StatusSolicitacao status;
+    private String status = String.valueOf(StatusSolicitacao.Pendente);
 
     public SalaMatch(SalaMatchDTO smDTO) {
         this.idAnfitriao = smDTO.idAnfitriao();
         this.idHospede = smDTO.idHospede();
-        this.status = smDTO.status();
     }
 }

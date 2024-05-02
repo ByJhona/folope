@@ -7,7 +7,7 @@ public record SalaMatchDTO(
         Long id,
         Long idAnfitriao,
         Long idHospede,
-        StatusSolicitacao status
+        String status
 ) {
 
         public SalaMatchDTO(SalaMatch sm) {

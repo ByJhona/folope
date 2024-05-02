@@ -40,10 +40,29 @@ public class TmdbAPI {
                     .retrieve()
                     .bodyToMono(FilmeDTO.class)
                     .block();
-        }catch (WebClientResponseException ex){
+        } catch (WebClientResponseException ex) {
             throw new NaoEncontradoException(id);
         }
     }
+
+    public List<FilmeDescobertaDTO> buscarFilmesPorTitulo(String parametros) {
+        System.out.println(parametros);
+        String filmesString = client.get()
+                .uri("/search/movie" + parametros)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        try {
+            JsonNode raiz = json.readTree(filmesString);
+            JsonNode resultadosArray = raiz.path("results");
+            return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
+            });
+        } catch (IOException ignored) {
+        }
+        return null;
+    }
+
 
     public List<FilmeDescobertaDTO> buscarFilmesDescoberta(String parametros) {
         System.out.println(parametros);
