@@ -4,9 +4,6 @@ import com.byjhona.folope.domain.relac_usuario_filme_curtido.RelacUsuarioFilmeCu
 import com.byjhona.folope.domain.relac_usuario_genero_curtido.RelacUsuarioGeneroCurtido;
 import com.byjhona.folope.domain.usuario.Usuario;
 import com.byjhona.folope.domain.usuario.UsuarioDTO;
-import com.byjhona.folope.repository.RelacUsuarioFilmeCurtidoRepository;
-import com.byjhona.folope.repository.RelacUsuarioGeneroCurtidoRepository;
-import com.byjhona.folope.repository.UsuarioRepository;
 import com.byjhona.folope.service.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
-
 
 
     @PostMapping("/cadastrar")

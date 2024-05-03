@@ -7,10 +7,13 @@ import com.byjhona.folope.domain.relac_sala_match_filmes.RelacSalaMatchFilmes;
 import com.byjhona.folope.domain.relac_sala_match_filmes.RelacSalaMatchFilmesDTO;
 import com.byjhona.folope.domain.sala_match.SalaMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatchDTO;
+import com.byjhona.folope.domain.usuario.Usuario;
 import com.byjhona.folope.exception.NaoAutorizadoException;
+import com.byjhona.folope.exception.NaoEncontradoException;
 import com.byjhona.folope.repository.*;
 import com.byjhona.folope.types.StatusSolicitacao;
 import com.byjhona.folope.util.TratadorParametros;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,8 @@ public class SalaMatchService {
     @Autowired
     private SalaMatchRepository salaMatchRepo;
     @Autowired
+    private UsuarioRepository usuarioRepo;
+    @Autowired
     private RelacSalaMatchFilmesRepository salaMatchFilmesRepo;
     @Autowired
     private TmdbAPI tmdbAPI;
@@ -42,10 +47,21 @@ public class SalaMatchService {
 
     @Transactional
     public SalaMatchDTO cadastrar(SalaMatch salaMatch) {
-        System.out.println(salaMatch.getStatus());
-        salaMatchRepo.save(salaMatch);
-        escolherFilmesSala(salaMatch);
-        return new SalaMatchDTO(salaMatch);
+        Long idAnfitriao = salaMatch.getIdAnfitriao();
+        Long idHospede = salaMatch.getIdHospede();
+
+        try {
+            usuarioRepo.getReferenceById(idAnfitriao);
+            usuarioRepo.getReferenceById(idHospede);
+            //usuarioRepo.existeNoBanco(anfitriao);
+            //usuarioRepo.existeNoBanco(hospede);
+
+            salaMatchRepo.save(salaMatch);
+            escolherFilmesSala(salaMatch);
+            return new SalaMatchDTO(salaMatch);
+        } catch (Exception ex) {
+            throw new NaoEncontradoException(idAnfitriao);
+        }
     }
 
     @Transactional
@@ -152,16 +168,24 @@ public class SalaMatchService {
     }
 
     public void responderConviteMatch(String resposta, Long idSala, Long idUsuario) {
-        SalaMatch salaMatch = salaMatchRepo.getReferenceById(idSala);
 
-        if (!salaMatch.getIdHospede().equals(idUsuario)) {
-            throw new NaoAutorizadoException();
+
+        try {
+            Usuario usuario = usuarioRepo.getReferenceById(idUsuario);
+            SalaMatch salaMatch = salaMatchRepo.getReferenceById(idSala);
+            if (!salaMatch.getIdHospede().equals(idUsuario)) {
+                throw new NaoAutorizadoException();
+            }
+
+            if (resposta.equals(StatusSolicitacao.Aceito.toString()) || resposta.equals(StatusSolicitacao.Recusado.toString())) {
+                salaMatch.setStatus(resposta);
+                salaMatchRepo.save(salaMatch);
+            }
+        } catch (EntityNotFoundException ex) {
+            throw new NaoEncontradoException(idSala);
         }
 
-        if (resposta.equals(StatusSolicitacao.Aceito.toString()) || resposta.equals(StatusSolicitacao.Recusado.toString())) {
-            salaMatch.setStatus(resposta);
-            salaMatchRepo.save(salaMatch);
-        }
+
     }
 
 

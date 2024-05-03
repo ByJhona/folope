@@ -37,21 +37,33 @@ public class UsuarioService {
         return new UsuarioDTO(usuario);
     }
 
-    public void cadastrarFilmeCurtido(RelacUsuarioFilmeCurtido filmeCur) {
-        if (!usuarioFilmeCurtidoRepo.existeNoBanco(filmeCur)) {
-            usuarioFilmeCurtidoRepo.save(filmeCur);
+    public void cadastrarFilmeCurtido(RelacUsuarioFilmeCurtido filmeCurtido) {
+        Long idUsuario = filmeCurtido.getIdUsuario();
+        Usuario usuario = usuarioRepo.getReferenceById(idUsuario);
+        boolean existeFilmeNoBanco = usuarioFilmeCurtidoRepo.existeNoBanco(filmeCurtido);
+
+        try {
+            usuarioRepo.existeNoBanco(usuario);
+        } catch (Exception ex) {
+            throw new NaoEncontradoException(idUsuario);
+        }
+
+        if (!existeFilmeNoBanco) {
+            usuarioFilmeCurtidoRepo.save(filmeCurtido);
         } else {
             throw new RelacaoExisteNoBancoException();
         }
     }
+
+
     public void cadastrarGeneroCurtido(RelacUsuarioGeneroCurtido generoCur) {
         Long idUsuario = generoCur.getIdUsuario();
         Usuario usuario = usuarioRepo.getReferenceById(idUsuario);
         boolean existeGeneroNoBanco = usuarioGeneroCurtidoRepo.existeNoBanco(generoCur);
 
-        try{
+        try {
             usuarioRepo.existeNoBanco(usuario);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new NaoEncontradoException(idUsuario);
         }
 

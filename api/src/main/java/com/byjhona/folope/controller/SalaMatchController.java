@@ -2,24 +2,16 @@ package com.byjhona.folope.controller;
 
 import com.byjhona.folope.domain.relac_sala_match_filme_curtido.RelacSalaMatchFilmeCurtido;
 import com.byjhona.folope.domain.relac_sala_match_filme_curtido.RelacSalaMatchFilmeCurtidoDTO;
-import com.byjhona.folope.domain.relac_sala_match_filmes.RelacSalaMatchFilmes;
 import com.byjhona.folope.domain.relac_sala_match_filmes.RelacSalaMatchFilmesDTO;
 import com.byjhona.folope.domain.sala_match.SalaMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatchDTO;
-import com.byjhona.folope.repository.RelacSalaMatchFilmeCurtidoRepository;
-import com.byjhona.folope.repository.RelacSalaMatchFilmesRepository;
-import com.byjhona.folope.repository.SalaMatchRepository;
 import com.byjhona.folope.service.SalaMatchService;
-import com.byjhona.folope.types.StatusSolicitacao;
 import jakarta.transaction.Transactional;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,12 +19,6 @@ import java.util.List;
 public class SalaMatchController {
     @Autowired
     private SalaMatchService salaMatchService;
-    @Autowired
-    RelacSalaMatchFilmesRepository relacSalaMatchFilmesRepository;
-    @Autowired
-    RelacSalaMatchFilmeCurtidoRepository relacSalaMatchFilmeCurtidoRepository;
-    @Autowired
-    SalaMatchRepository repo;
 
     @Transactional
     @PostMapping("/cadastrar")
@@ -49,14 +35,14 @@ public class SalaMatchController {
 
     @GetMapping("/buscar/{id}/filmes")
     public ResponseEntity<List<RelacSalaMatchFilmesDTO>> listarFilmesSalaMatch(@PathVariable Long id) {
-       List<RelacSalaMatchFilmesDTO> filmesSalaMatch = salaMatchService.listarFilmesSalaMatch(id);
+        List<RelacSalaMatchFilmesDTO> filmesSalaMatch = salaMatchService.listarFilmesSalaMatch(id);
         return ResponseEntity.ok().body(filmesSalaMatch);
     }
 
     @GetMapping("/buscar/{id}/filmes-curtidos")
     public ResponseEntity<List<RelacSalaMatchFilmeCurtidoDTO>> mostrarFilmesCurtidos(@PathVariable Long id) {
-       List<RelacSalaMatchFilmeCurtidoDTO> filmesCurtidosDTO = salaMatchService.mostrarFilmesCurtidos(id);
-       return ResponseEntity.ok().body(filmesCurtidosDTO);
+        List<RelacSalaMatchFilmeCurtidoDTO> filmesCurtidosDTO = salaMatchService.mostrarFilmesCurtidos(id);
+        return ResponseEntity.ok().body(filmesCurtidosDTO);
     }
 
     @Transactional
