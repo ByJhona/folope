@@ -18,6 +18,6 @@ public class TratadorDeException {
     }
     @ExceptionHandler(RelacaoExisteNoBancoException.class)
     public ResponseEntity<RelacaoExisteNoBancoException> tratarRelacaoExisteNoBancoException(RelacaoExisteNoBancoException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex);
     }
 }

@@ -41,14 +41,16 @@ create table relac_usuario_genero_curtido(
     id SERIAL not null,
     id_usuario integer not null,
     id_genero integer not null,
-    primary key(id)
+    primary key(id),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
 
 create table relac_usuario_filme_curtido(
     id SERIAL not null,
     id_usuario integer not null,
     id_filme integer not null,
-    primary key(id)
+    primary key(id),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
 
 

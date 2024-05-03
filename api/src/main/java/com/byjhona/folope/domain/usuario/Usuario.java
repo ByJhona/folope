@@ -24,11 +24,4 @@ public class Usuario {
     private String email;
     @Column(name = "senha")
     private String senha;
-
-
-    public Usuario(UsuarioDTO usuarioDTO) {
-        this.nome = usuarioDTO.nome();
-        this.email = usuarioDTO.email();
-        this.senha = usuarioDTO.senha();
-    }
 }

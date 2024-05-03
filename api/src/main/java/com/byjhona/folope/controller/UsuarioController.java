@@ -10,48 +10,41 @@ import com.byjhona.folope.repository.UsuarioRepository;
 import com.byjhona.folope.service.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private RelacUsuarioGeneroCurtidoRepository relacUsuarioGeneroCurtidoRepository;
     @Autowired
     private UsuarioService usuarioService;
 
 
 
     @PostMapping("/cadastrar")
-    public ResponseEntity cadastrar(@RequestBody UsuarioDTO usuarioDTO) {
-        Usuario usuario = new Usuario(usuarioDTO);
-        usuarioRepository.save(usuario);
-        return ResponseEntity.ok().body(usuarioDTO);
+    public ResponseEntity<HttpStatus> cadastrar(@RequestBody Usuario usuario) {
+        usuarioService.cadastrar(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/buscar/{id}")
-    public ResponseEntity mostrar(@PathVariable Long id) {
-        Usuario usuario = usuarioRepository.getReferenceById(id);
-        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+    public ResponseEntity<UsuarioDTO> mostrar(@PathVariable Long id) {
+        UsuarioDTO usuarioDTO = usuarioService.mostrar(id);
         return ResponseEntity.ok().body(usuarioDTO);
     }
 
     @Transactional
     @PostMapping("/curtir/genero")
-    public ResponseEntity<RelacUsuarioGeneroCurtido> cadastrarGeneroCurtido(@RequestBody RelacUsuarioGeneroCurtido relacao) {
-        RelacUsuarioGeneroCurtido novaRelacao = relacUsuarioGeneroCurtidoRepository.save(relacao);
-        return ResponseEntity.ok().body(novaRelacao);
+    public ResponseEntity<HttpStatus> cadastrarGeneroCurtido(@RequestBody RelacUsuarioGeneroCurtido generoCurtido) {
+        usuarioService.cadastrarGeneroCurtido(generoCurtido);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Transactional
     @PostMapping("/curtir/filme")
-    public ResponseEntity<RelacUsuarioFilmeCurtido> cadastrarFilmeCurtido(@RequestBody RelacUsuarioFilmeCurtido filmeCur) {
-        RelacUsuarioFilmeCurtido filmeCurtido = usuarioService.cadastrarFilmeCurtido(filmeCur);
-        return ResponseEntity.ok().body(filmeCurtido);
+    public ResponseEntity<HttpStatus> cadastrarFilmeCurtido(@RequestBody RelacUsuarioFilmeCurtido filmeCurtido) {
+        usuarioService.cadastrarFilmeCurtido(filmeCurtido);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
