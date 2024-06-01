@@ -26,9 +26,8 @@ public class UsuarioService {
         boolean existeNoBanco = usuarioRepo.existeNoBanco(usuario);
         if (!existeNoBanco) {
             usuarioRepo.save(usuario);
-
         } else {
-            throw new RelacaoExisteNoBancoException();
+            throw new RelacaoExisteNoBancoException("O usuario com e-mail: " + usuario.getEmail()+ " já existe.");
         }
     }
 
@@ -45,13 +44,13 @@ public class UsuarioService {
         try {
             usuarioRepo.existeNoBanco(usuario);
         } catch (Exception ex) {
-            throw new NaoEncontradoException(idUsuario);
+            throw new NaoEncontradoException("O usúario de id: " + idUsuario + " não foi encontrado.");
         }
 
         if (!existeFilmeNoBanco) {
             usuarioFilmeCurtidoRepo.save(filmeCurtido);
         } else {
-            throw new RelacaoExisteNoBancoException();
+            throw new RelacaoExisteNoBancoException("O usuario com id: " + idUsuario + " já curtiu esse filme.");
         }
     }
 
@@ -64,13 +63,13 @@ public class UsuarioService {
         try {
             usuarioRepo.existeNoBanco(usuario);
         } catch (Exception ex) {
-            throw new NaoEncontradoException(idUsuario);
+            throw new NaoEncontradoException("O usúario de id: " + idUsuario + " não foi encontrado.");
         }
 
         if (!existeGeneroNoBanco) {
             usuarioGeneroCurtidoRepo.save(generoCur);
         } else {
-            throw new RelacaoExisteNoBancoException();
+            throw new RelacaoExisteNoBancoException("O usuario com id: " + idUsuario + " já curtiu esse genero.");
         }
     }
 }

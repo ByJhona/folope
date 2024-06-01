@@ -14,7 +14,7 @@ public class TratadorDeException {
     }
     @ExceptionHandler(NaoAutorizadoException.class)
     public ResponseEntity<NaoAutorizadoException> tratarNaoAutorizadoException(NaoAutorizadoException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex);
     }
     @ExceptionHandler(RelacaoExisteNoBancoException.class)
     public ResponseEntity<RelacaoExisteNoBancoException> tratarRelacaoExisteNoBancoException(RelacaoExisteNoBancoException ex){

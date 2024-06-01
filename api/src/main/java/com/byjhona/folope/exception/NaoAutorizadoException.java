@@ -7,11 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIncludeProperties({"sucesso", "status", "mensagem"})
-public class NaoAutorizadoException extends RuntimeException{
+public class NaoAutorizadoException extends RuntimeException {
     boolean sucesso = false;
     int status = 401;
     String mensagem;
-    public NaoAutorizadoException(){
-        this.mensagem = "O usuário não tem permissão para realizar ação.";
+
+    public NaoAutorizadoException(String mensagem) {
+        this.mensagem = mensagem;
     }
 }

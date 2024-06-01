@@ -5,6 +5,7 @@ import com.byjhona.folope.domain.relac_sala_match_filme_curtido.RelacSalaMatchFi
 import com.byjhona.folope.domain.relac_sala_match_filmes.RelacSalaMatchFilmesDTO;
 import com.byjhona.folope.domain.sala_match.SalaMatch;
 import com.byjhona.folope.domain.sala_match.SalaMatchDTO;
+import com.byjhona.folope.service.ProdutorEventos;
 import com.byjhona.folope.service.SalaMatchService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.List;
 public class SalaMatchController {
     @Autowired
     private SalaMatchService salaMatchService;
+    @Autowired
+    private ProdutorEventos produtorEventos;
 
     @Transactional
     @PostMapping("/cadastrar")
@@ -49,6 +52,7 @@ public class SalaMatchController {
     @PostMapping("/cadastrar/filme-curtido")
     public ResponseEntity<RelacSalaMatchFilmeCurtidoDTO> cadastrarFilmeCurtido(@RequestBody RelacSalaMatchFilmeCurtido filmeCurtido) {
         RelacSalaMatchFilmeCurtidoDTO filmeCurtidoDTO = salaMatchService.cadastrarFilmeCurtido(filmeCurtido);
+        produtorEventos.enviarFilmeCurtido(filmeCurtido.getIdSalaMatch(), String.valueOf(filmeCurtido.getIdFilme()));
         return ResponseEntity.ok().body(filmeCurtidoDTO);
     }
 

@@ -12,7 +12,7 @@ public class NaoEncontradoException extends RuntimeException{
     boolean sucesso = false;
     int status = 404;
     String mensagem;
-    public NaoEncontradoException(Long id){
-        this.mensagem = "O objeto com id = " + id + " não foi encontrado.";
+    public NaoEncontradoException(String  mensagem){
+        this.mensagem = mensagem;
     }
 }

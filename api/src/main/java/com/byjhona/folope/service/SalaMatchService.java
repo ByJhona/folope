@@ -16,12 +16,7 @@ import com.byjhona.folope.util.TratadorParametros;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +55,7 @@ public class SalaMatchService {
             escolherFilmesSala(salaMatch);
             return new SalaMatchDTO(salaMatch);
         } catch (Exception ex) {
-            throw new NaoEncontradoException(idAnfitriao);
+            throw new NaoEncontradoException("O usúario de id: " + idAnfitriao + " ou id : "+ idHospede + " não encontrado.");
         }
     }
 
@@ -174,7 +169,7 @@ public class SalaMatchService {
             Usuario usuario = usuarioRepo.getReferenceById(idUsuario);
             SalaMatch salaMatch = salaMatchRepo.getReferenceById(idSala);
             if (!salaMatch.getIdHospede().equals(idUsuario)) {
-                throw new NaoAutorizadoException();
+                throw new NaoAutorizadoException("O usúario de id: " + idUsuario + " não tem permissão para responder o convite.");
             }
 
             if (resposta.equals(StatusSolicitacao.Aceito.toString()) || resposta.equals(StatusSolicitacao.Recusado.toString())) {
@@ -182,12 +177,11 @@ public class SalaMatchService {
                 salaMatchRepo.save(salaMatch);
             }
         } catch (EntityNotFoundException ex) {
-            throw new NaoEncontradoException(idSala);
+            throw new NaoEncontradoException("A sala de id: " + idSala + " não foi encontrada");
         }
 
 
     }
-
 
     public void deletar(Long id) {
         salaMatchRepo.deleteById(id);

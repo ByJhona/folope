@@ -41,7 +41,7 @@ public class TmdbAPI {
                     .bodyToMono(FilmeDTO.class)
                     .block();
         } catch (WebClientResponseException ex) {
-            throw new NaoEncontradoException(id);
+            throw new NaoEncontradoException("Filme de id: " + id + " não foi encontrado");
         }
     }
 
