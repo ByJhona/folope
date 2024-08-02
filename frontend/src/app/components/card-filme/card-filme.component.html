@@ -1,3 +1,19 @@
 <div class="card-filme">
-<img src="https://musicart.xboxlive.com/7/2b521100-0000-0000-0000-000000000002/504/image.jpg?w=1920&h=1080" alt="teste">
+    <div class="poster-filme">
+        <img [src]="filme.urlCapaPoster" alt="">
+    </div>
+    <div class="info-filme">
+        <div class="label">Titulo:</div>
+        <div class="titulo">
+            <p>{{filme.titulo}}</p>
+        </div>
+        <div class="nota">
+            <div class="label">Nota:</div>
+            <p>{{filme.nota}}</p>
+        </div>
+        <div class="sinopse">
+        <div class="label">Sinopse:</div>
+            <p>{{filme.sinopse}}</p>
+        </div>
+    </div>
 </div>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FilmeDescoberta } from '../../types/FilmeDescoberta';
 
 @Component({
   selector: 'app-card-filme',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './card-filme.component.scss'
 })
 export class CardFilmeComponent {
-
+@Input() filme!: FilmeDescoberta;
 }
