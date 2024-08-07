@@ -4,7 +4,7 @@ import { CardFilmeComponent } from '../../components/card-filme/card-filme.compo
 import { FilmeService } from '../../services/filme.service';
 import { FilmeDescoberta } from '../../types/FilmeDescoberta';
 import { NgFor } from '@angular/common';
-import { FilmeDestaqueComponent } from "../../filme-destaque/filme-destaque.component";
+import { FilmeDestaqueComponent } from "../../components/filme-destaque/filme-destaque.component";
 
 @Component({
   selector: 'app-home',
@@ -20,7 +20,7 @@ export class HomeComponent {
   ngOnInit(): void {
     this.filmeService.listarFilmes().subscribe((data) => {
       this.filmesSemanais = data
-      this.filmeDestaque = data[0]
+      this.filmeDestaque = data[2]
       console.log(this.filmeDestaque)
     });
   }

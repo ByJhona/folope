@@ -1,19 +1,14 @@
 <div class="card-filme">
-    <div class="poster-filme">
-        <img [src]="filme.urlCapaPoster" alt="">
-    </div>
     <div class="info-filme">
-        <div class="label">Titulo:</div>
+        <div class="poster-filme">
+            <img [src]="filme.urlCapaPoster" alt="">
+        </div>
         <div class="titulo">
             <p>{{filme.titulo}}</p>
         </div>
-        <div class="nota">
-            <div class="label">Nota:</div>
-            <p>{{filme.nota}}</p>
-        </div>
-        <div class="sinopse">
-        <div class="label">Sinopse:</div>
-            <p>{{filme.sinopse}}</p>
-        </div>
+
+    </div>
+    <div class="nota">
+        <p>{{filme.nota.toFixed(1)}}</p>
     </div>
 </div>

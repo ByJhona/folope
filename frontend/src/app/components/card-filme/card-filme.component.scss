@@ -1,83 +1,62 @@
 .card-filme {
-    display: flex;
     position: relative;
-    height: 11rem;
-    width: 8rem;
-    background-color: rgba(0, 0, 0, 0.116);
-    border-radius: .5rem;
-    box-shadow: .1rem .1rem .3rem;
-    overflow: hidden;
-
-    &:hover {
-        width: 16rem;
-        transition: 1s;
-
-        .info-filme {
-            transition: 1s;
-            transform: translate(8rem);
-        }
-
-        .poster-filme {
-            transition: 1s;
-            filter: brightness(80%);
-        }
-    }
-
-    &:not(:hover) {
-        transition: 1s;
-
-        .info-filme {
-            transition: 1s;
-        }
-
-        .poster-filme {
-            transition: 1s;
-        }
-
-    }
-}
-
-.info-filme {
     display: flex;
-    position: relative;
     flex-direction: column;
-    width: 8rem;
-    height: 11rem;
-    padding: .4rem;
-    box-sizing: border-box;
+    height: 14rem;
+    width: 9rem;
+    border-radius: .5rem;
+    background-color: transparent;
+    box-shadow: .1rem .1rem .3rem;
 
-    .label {
-        font-size: .6rem;
-    }
-
-    .titulo {
+    .info-filme {
         display: flex;
-        flex-direction: row;
-        font-size: .8rem;
-        
-    }
-    .nota{
-        justify-content: space-around;
-        font-size: .8rem;
-    }
-
-    .sinopse {
-        font-size: .7rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-}
-
-
-.poster-filme {
-    position: absolute;
-    width: 8rem;
-    height: 11rem;
-    z-index: 2;
-
-    img {
+        flex-direction: column;
         height: 100%;
         width: 100%;
+        border-radius: .5rem;
+        overflow: hidden;
+        background-color: var(--cor-cinza-1);
+
+        .poster-filme {
+            width: 100%;
+            height: 75%;
+
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        .titulo {
+            width: 100%;
+            height: 25%;
+            display: flex;
+            flex-direction: row;
+            font-size: .8rem;
+            padding: .3rem;
+            color: var(--cor-branco-1);
+
+        }
+
+    }
+
+    .nota {
+        color: var(--cor-preto-2);
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        font-size: .8rem;
+        background-color: rgba(173, 173, 173, 0.719);
+        right: -1rem;
+        top: -1rem;
+        p{
+            margin: 0;
+        }
+        
     }
 }

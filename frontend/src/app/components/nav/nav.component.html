@@ -4,14 +4,14 @@
             <img src="Logo.svg" alt="Logo">
         </div>
 
-        <div class="pesquisar">
-            <form class="form-pesquisar">
-                <input type="text">
-                <button class="bnt-pesquisar">
-                    <img src="search.svg" alt="Botão pesquisar">
-                </button>
-            </form>
+        <app-barra-pesquisar class="barra-pesquisar-desktop"></app-barra-pesquisar>
+
+        <div class="pesquisar-mobile">
+            <button class="bnt-pesquisar-mobile" (click)="trocar()">
+                <img src="search.svg" alt="Botão pesquisar">
+            </button>
         </div>
+
 
         <div class="match">
             <button class="bnt-match">
@@ -23,10 +23,15 @@
         <div class="login">
             <button class="bnt-login">
                 <mat-icon>person</mat-icon>
-                <p>Entrar</p>
+                <h6>Entrar</h6>
             </button>
 
 
         </div>
+
     </div>
 </div>
+@if(pesquisar){
+            <app-barra-pesquisar class="barra-pesquisar-mobile"></app-barra-pesquisar>
+
+            }

@@ -1,0 +1,39 @@
+.pesquisar {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 1rem;
+    width: 15rem;
+    height: 50%;
+    padding: 0 .5rem 0 .5rem;
+    background-color: var(--cor-preto-2);
+    margin: 0;
+}
+
+.input-pesquisar {
+    color: var(--cor-branco-1);
+    background: none;
+    border: transparent;
+    width: 80%;
+    height: 100%;
+
+    &:focus {
+        outline: none;
+    }
+
+}
+
+.bnt-pesquisar {
+    position: absolute;
+    right: .5rem;
+    background: none;
+    border: none;
+    color: var(--cor-cinza-1);
+
+    img {
+        color: #00050d;
+    }
+
+}

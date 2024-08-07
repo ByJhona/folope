@@ -1,5 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    scrollbar-color: red;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;background-color: #202020;}
+   
+}
+body{
+    background-color: var(--cor-preto-2);
+}
+
+:root {
+    --cor-preto-1: #121212;
+    --cor-preto-2: #202020;
+    --cor-branco-1: #fdfdfd;
+    --cor-cinza-1: #2F2F2F;
+    --cor-cinza-2: #808080;
+    --cor-azul-1: #506191;
+
+    --tamanho-mobile: 680px;
+}
 
