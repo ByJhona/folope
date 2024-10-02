@@ -2,11 +2,12 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 14rem;
+    height: 14.5rem;
     width: 9rem;
     border-radius: .5rem;
     background-color: transparent;
     box-shadow: .1rem .1rem .3rem;
+    z-index: -1;
 
     .info-filme {
         display: flex;
@@ -24,6 +25,7 @@
             img {
                 height: 100%;
                 width: 100%;
+
             }
         }
 
@@ -40,23 +42,55 @@
 
     }
 
-    .nota {
-        color: var(--cor-preto-2);
+    .mascara {
         position: absolute;
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        align-items: center;
+        background-color: var(--cor-preto-2);
+        width: 2.5rem;
+        height: 2.5rem;
         border-radius: 50%;
-        width: 2rem;
-        height: 2rem;
-        font-size: .8rem;
-        background-color: rgba(173, 173, 173, 0.719);
         right: -1rem;
         top: -1rem;
-        p{
+    }
+
+
+    .nota-sniper {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--cor-preto-2);
+        background-color: rgba(173, 173, 173, 0.719);
+        font-size: 0.8rem;
+
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        right: -.5rem;
+        top: -.5rem;
+
+        .mascara {
+            position: absolute;
+            background-color: var(--cor-preto-2);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+        }
+
+        .sniper {
+            position: absolute;
+
+        }
+
+        .nota {
+            position: absolute;
+        }
+
+        p {
             margin: 0;
         }
-        
+
     }
+
+
+
 }

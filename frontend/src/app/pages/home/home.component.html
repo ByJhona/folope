@@ -1,8 +1,10 @@
-<app-nav></app-nav>
+@if (filmeDestaque != undefined) {
+
 <app-filme-destaque [filme]=filmeDestaque></app-filme-destaque>
+}
 <div class="filmes-semanais">
     @for (filme of filmesSemanais; track filme.id){
-        <app-card-filme [filme]='filme'></app-card-filme>
+    <app-card-filme [filme]='filme'></app-card-filme>
     }
 
 </div>

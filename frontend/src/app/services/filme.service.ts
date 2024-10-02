@@ -16,5 +16,11 @@ export class FilmeService {
     return this.httpClient.get<FilmeDescoberta[]>(this.apiUrl+'/buscar');
   }
 
+  pesquisarFilmeTitulo(titulo:string):Observable<FilmeDescoberta[]>{
+    console.log("OPpa")
+    return this.httpClient.get<FilmeDescoberta[]>(this.apiUrl+'/buscar/titulo?titulo='+titulo);
+
+  }
+
 
 }

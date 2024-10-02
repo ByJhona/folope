@@ -37,8 +37,8 @@ public record FilmeDescobertaDTO(
         ) {
                 this.id = id;
                 this.titulo = titulo;
-                this.urlCapaFundo = "https://image.tmdb.org/t/p/original" + urlCapaFundo;
-                this.urlCapaPoster = "https://image.tmdb.org/t/p/original" + urlCapaPoster;
+                this.urlCapaFundo = "https://image.tmdb.org/t/p/w500" + urlCapaFundo;
+                this.urlCapaPoster = "https://image.tmdb.org/t/p/w500" + urlCapaPoster;
                 this.idGeneros = idGeneros;
                 this.sinopse = sinopse;
                 this.dataLancamento = dataLancamento;

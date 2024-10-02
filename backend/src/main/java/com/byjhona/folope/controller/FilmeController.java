@@ -21,8 +21,8 @@ public class FilmeController {
         FilmeDTO filmeDTO = tmdbAPI.buscarFilmePorId(id);
         return ResponseEntity.ok().body(filmeDTO);
     }
-    @GetMapping("/buscar/titulo/{titulo}")
-    public ResponseEntity<List<FilmeDescobertaDTO>> buscarPorNome(@PathVariable String titulo) {
+    @GetMapping("/buscar/titulo")
+    public ResponseEntity<List<FilmeDescobertaDTO>> buscarPorNome(@RequestParam(required = false) String titulo) {
         // colocar em termos de parametros
         String parametros = TratadorParametros.tratar(null, null, titulo);
 

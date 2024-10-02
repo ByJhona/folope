@@ -20,7 +20,7 @@ export class HomeComponent {
   ngOnInit(): void {
     this.filmeService.listarFilmes().subscribe((data) => {
       this.filmesSemanais = data
-      this.filmeDestaque = data[2]
+      this.filmeDestaque = data[4]
       console.log(this.filmeDestaque)
     });
   }

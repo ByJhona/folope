@@ -8,7 +8,17 @@
         </div>
 
     </div>
-    <div class="nota">
-        <p>{{filme.nota.toFixed(1)}}</p>
+    
+
+<div class="mascara"></div>
+    <div class="nota-sniper">
+
+        <div class="nota">
+            <p>{{filme.nota.toFixed(1)}}</p>
+        </div>
+        <mat-progress-spinner class="sniper"  mode="determinate" [value]=filme.nota*10 diameter="35">
+        </mat-progress-spinner>
     </div>
+
+
 </div>

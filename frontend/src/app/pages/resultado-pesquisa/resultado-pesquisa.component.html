@@ -1,0 +1,9 @@
+<h6>Barra: {{titulo}}</h6>
+<div class="container">
+    <div class="filmes">
+        @for (filme of filmes; track filme.id){
+        <app-card-filme [filme]='filme'></app-card-filme>
+        }
+
+    </div>
+</div>

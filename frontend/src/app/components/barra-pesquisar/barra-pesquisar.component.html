@@ -1,8 +1,9 @@
 <div class="pesquisar">
     <form class="form-pesquisar">
-        <input type="text" class="input-pesquisar" placeholder="Pesquisar filme...">
-        <button class="bnt-pesquisar">
+        <input type="text" class="input-pesquisar" placeholder="Pesquisar filme..." id="teste" [formControl]="pesquisaForm">
+        <button class="bnt-pesquisar"  (click)="pesquisar()" type="button">
             <img src="search.svg" alt="Botão pesquisar">
         </button>
     </form>
 </div>
+

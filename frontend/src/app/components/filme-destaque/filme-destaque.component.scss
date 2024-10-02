@@ -20,6 +20,12 @@
         object-fit: cover;
     }
 
+    .esmaecer {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: #000000a4
+    }
     .degrade {
         position: absolute;
         height: 100%;
@@ -31,7 +37,7 @@
 
 .informacoes {
     padding: 1rem;
-    max-width: 70%;
+    max-width: 60%;
     max-height: 100%;
     color: var(--cor-branco-1);
     position: relative;
