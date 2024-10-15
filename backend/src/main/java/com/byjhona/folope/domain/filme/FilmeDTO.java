@@ -42,8 +42,8 @@ public record FilmeDTO(
     ) {
         this.id = id;
         this.titulo = titulo;
-        this.urlCapaFundo = "https://image.tmdb.org/t/p/w500" + urlCapaFundo;
-        this.urlCapaPoster = "https://image.tmdb.org/t/p/w500" + urlCapaPoster;
+        this.urlCapaFundo = "https://image.tmdb.org/t/p/original" + urlCapaFundo;
+        this.urlCapaPoster = "https://image.tmdb.org/t/p/original" + urlCapaPoster;
         this.generos = generos;
         this.sinopse = sinopse;
         this.dataLancamento = dataLancamento;

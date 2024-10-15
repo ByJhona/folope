@@ -100,7 +100,7 @@ public class SalaMatchService {
             }
         }
         String genero = generosMatch.stream().map(String::valueOf).collect(Collectors.joining(","));
-        genero = TratadorParametros.tratar(null, genero, null);
+        genero = TratadorParametros.tratar(null, genero, null, null);
         return genero;
     }
 

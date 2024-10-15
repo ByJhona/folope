@@ -2,6 +2,7 @@ package com.byjhona.folope.controller;
 
 import com.byjhona.folope.domain.filme.FilmeDTO;
 import com.byjhona.folope.domain.filme.FilmeDescobertaDTO;
+import com.byjhona.folope.domain.filme.FilmeDescobertaResponse;
 import com.byjhona.folope.service.TmdbAPI;
 import com.byjhona.folope.util.TratadorParametros;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,17 @@ public class FilmeController {
     @Autowired
     private TmdbAPI tmdbAPI;
 
-    @GetMapping("/buscar/id/{id}")
-    public ResponseEntity<FilmeDTO> buscarPorId(@PathVariable Long id) {
+    @GetMapping("/buscar/id")
+    public ResponseEntity<FilmeDTO> buscarPorId(@RequestParam(required = true) Long id) {
         FilmeDTO filmeDTO = tmdbAPI.buscarFilmePorId(id);
         return ResponseEntity.ok().body(filmeDTO);
     }
     @GetMapping("/buscar/titulo")
-    public ResponseEntity<List<FilmeDescobertaDTO>> buscarPorNome(@RequestParam(required = false) String titulo) {
+    public ResponseEntity<FilmeDescobertaResponse> buscarPorNome(@RequestParam(required = false) String titulo, @RequestParam(required = false) String pagina) {
         // colocar em termos de parametros
-        String parametros = TratadorParametros.tratar(null, null, titulo);
+        String parametros = TratadorParametros.tratar(null, null, titulo, pagina);
 
-        List<FilmeDescobertaDTO> filmes = tmdbAPI.buscarFilmesPorTitulo(parametros);
+        FilmeDescobertaResponse filmes = tmdbAPI.buscarFilmesPorTitulo(parametros);
         return ResponseEntity.ok().body(filmes);
     }
 
@@ -36,7 +37,7 @@ public class FilmeController {
                                                            @RequestParam(required = false) String query
 
     ) {
-        String parametros = TratadorParametros.tratar(sortear, genero, query);
+        String parametros = TratadorParametros.tratar(sortear, genero, query, null);
         List<FilmeDescobertaDTO> filmes = tmdbAPI.buscarFilmesDescoberta(parametros);
         return ResponseEntity.ok().body(filmes);
     }

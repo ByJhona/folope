@@ -1,7 +1,7 @@
 package com.byjhona.folope.util;
 
 public class TratadorParametros {
-    public static String tratar(String sortear, String genero, String query) {
+    public static String tratar(String sortear, String genero, String query, String pagina) {
         String parametros = "?";
 
         if (sortear != null) {
@@ -12,6 +12,9 @@ public class TratadorParametros {
         }
         if (query != null) {
             parametros += "query=" + query + "&";
+        }
+        if (pagina != null) {
+            parametros += "page=" + pagina + "&";
         }
 
         parametros += "language=pt-BR";

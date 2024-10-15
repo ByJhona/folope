@@ -2,46 +2,14 @@ package com.byjhona.folope.domain.filme;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public record FilmeDescobertaDTO(
-        @JsonAlias("id")
-        Long id,
-        @JsonAlias("title")
-        String titulo,
-        @JsonAlias("backdrop_path")
-        String urlCapaFundo,
-        @JsonAlias("poster_path")
-        String urlCapaPoster,
-        @JsonAlias("genre_ids")
-        int[] idGeneros,
-        @JsonAlias("overview")
-        String sinopse,
-        @JsonAlias("release_date")
-        String dataLancamento,
-        @JsonAlias("vote_average")
-        float nota
+import java.util.List;
+
+
+public record FilmeDescobertaResponse(
+        Integer pagina,
+        Integer quantPaginas,
+        List<FilmeDescobertaDTO> filmes
 ) {
-        public FilmeDescobertaDTO(
-                Long id,
-                String titulo,
-                String urlCapaFundo,
-                String urlCapaPoster,
-                int[] idGeneros,
-                String sinopse,
-                String dataLancamento,
-                float nota
-        ) {
-                this.id = id;
-                this.titulo = titulo;
-                this.urlCapaFundo = "https://image.tmdb.org/t/p/w500" + urlCapaFundo;
-                this.urlCapaPoster = "https://image.tmdb.org/t/p/w500" + urlCapaPoster;
-                this.idGeneros = idGeneros;
-                this.sinopse = sinopse;
-                this.dataLancamento = dataLancamento;
-                this.nota = nota;
-        }
 }

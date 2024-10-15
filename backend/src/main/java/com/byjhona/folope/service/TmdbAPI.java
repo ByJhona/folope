@@ -2,6 +2,7 @@ package com.byjhona.folope.service;
 
 import com.byjhona.folope.domain.filme.FilmeDTO;
 import com.byjhona.folope.domain.filme.FilmeDescobertaDTO;
+import com.byjhona.folope.domain.filme.FilmeDescobertaResponse;
 import com.byjhona.folope.domain.genero.Genero;
 import com.byjhona.folope.exception.NaoEncontradoException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -45,7 +46,7 @@ public class TmdbAPI {
         }
     }
 
-    public List<FilmeDescobertaDTO> buscarFilmesPorTitulo(String parametros) {
+    public FilmeDescobertaResponse buscarFilmesPorTitulo(String parametros) {
         System.out.println(parametros);
         String filmesString = client.get()
                 .uri("/search/movie" + parametros)
@@ -56,8 +57,15 @@ public class TmdbAPI {
         try {
             JsonNode raiz = json.readTree(filmesString);
             JsonNode resultadosArray = raiz.path("results");
-            return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
+            JsonNode quantPaginasNode = raiz.path("total_pages");
+            JsonNode paginaNode = raiz.path("page");
+            Integer pagina = json.readValue(paginaNode.traverse(), Integer.class);
+            Integer quantPaginas = json.readValue(quantPaginasNode.traverse(), Integer.class);
+            List<FilmeDescobertaDTO> filmes = json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
             });
+            return new FilmeDescobertaResponse(pagina, quantPaginas, filmes);
+            //return json.readValue(resultadosArray.traverse(), new TypeReference<List<FilmeDescobertaDTO>>() {
+            //});
         } catch (IOException ignored) {
         }
         return null;
