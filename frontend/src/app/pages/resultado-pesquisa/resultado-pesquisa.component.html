@@ -1,9 +1,20 @@
-<h6>Barra: {{titulo}}</h6>
 <div class="container">
-    <div class="filmes">
-        @for (filme of filmes; track filme.id){
-        <app-card-filme [filme]='filme'></app-card-filme>
-        }
+    <div class="container-conteudo">
+        <div class="titulo-paginator">
+            <h6 class="titulo">Filmes encontrados: {{titulo.value}}</h6>
+            <app-paginator (alterarPagina)="alterarPagina($event)" [maxPaginas]="filmesResponse.quantPaginas"
+                [paginaAtual]="paginaAtual"></app-paginator>
+        </div>
+        <div class="filmes">
+            @for (filme of filmesResponse.filmes; track filme.id){
+            <app-card-filme [filme]='filme'></app-card-filme>
+            }
 
+        </div>
+        <div class="paginator-rodape">
+            <app-paginator class="paginator" (alterarPagina)="alterarPagina($event)"
+                [maxPaginas]="filmesResponse.quantPaginas" [paginaAtual]="paginaAtual"></app-paginator>
+        </div>
     </div>
+
 </div>

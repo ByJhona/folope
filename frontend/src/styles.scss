@@ -1,26 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     /*font-family: Roboto, "Helvetica Neue", sans-serif;*/
-      font-family: "Sankofa Display", sans-serif;
+    //font-family: "Sankofa Display", sans-serif;
+    font-family: "Varela Round", sans-serif;
 
-    scrollbar-color: red;
 
-   
+
 }
-body{
+
+body {
     background-color: var(--cor-preto-2);
 }
 
 :root {
+    --cor-preto-0: #00050d;
     --cor-preto-1: #121212;
     --cor-preto-2: #202020;
     --cor-branco-1: #fdfdfd;
+    --cor-cinza-0: #242e34;
     --cor-cinza-1: #2F2F2F;
     --cor-cinza-2: #808080;
-    --cor-azul-1: #506191;
+    --cor-cinza-5: #c6cbd3;
+    --cor-azul-1: #0d253f;
+
+    --cor-fonte-h1: var(--cor-branco-1);
+    --cor-fonte-p: var(--cor-cinza-2);
 
     --tamanho-mobile: 680px;
+}
+
+::-webkit-scrollbar {
+    width: .5rem;
+    height: .5rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: .5rem;
+    background-color: #00000083;
+
+    &:hover {
+        background-color: var(--cor-azul-1);
+    }
+}
+
+h1 {
+
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 900;
+    font-size: smaller;
+    color: var(--cor-fonte-h1);
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    padding: 0;
+    margin: 0;
+    color: var(--cor-fonte-p);
 }

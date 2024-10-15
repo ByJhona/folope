@@ -7,8 +7,15 @@
     padding: .5rem;
     width: 100%;
     height: 5rem;
-    background-color: #00050d;
-    color: #cacaca;
+    //background-color: var( --cor-preto-1);
+    background-image: linear-gradient(to bottom , rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.2));
+    position: absolute;
+    z-index: 99999;
+    color: var(--cor-branco-1); 
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.199);
+    }
+    
 }
 
 .pesquisar-mobile {
@@ -69,6 +76,7 @@
 .logo {
     height: auto;
     width: auto;
+    cursor: pointer;
 }
 
 @media (max-width: 680px) {

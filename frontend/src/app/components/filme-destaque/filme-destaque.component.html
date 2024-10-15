@@ -12,7 +12,7 @@
         <div class="sinopse">
             <p>{{filme.sinopse}}</p>
         </div>
-        <app-bnt-trailer [filme]="filme"></app-bnt-trailer>
+        <app-botao label="Assistir trailer" (abrir)="abrirTrailer($event)" icone="play_arrow"></app-botao>
 
     </div>
 

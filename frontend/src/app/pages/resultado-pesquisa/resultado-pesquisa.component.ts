@@ -5,32 +5,52 @@ import { FilmeService } from '../../services/filme.service';
 import { FilmeDescoberta } from '../../types/FilmeDescoberta';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { PaginatorComponent } from "../../components/paginator/paginator.component";
+import { FilmesResponse } from '../../types/FilmesResponse';
 
 @Component({
   selector: 'app-resultado-pesquisa',
   standalone: true,
-  imports: [NavComponent, CardFilmeComponent],
+  imports: [NavComponent, CardFilmeComponent, PaginatorComponent],
   templateUrl: './resultado-pesquisa.component.html',
   styleUrl: './resultado-pesquisa.component.scss'
 })
 export class ResultadoPesquisaComponent {
-  filmes: FilmeDescoberta[] = [];
+  filmesResponse: FilmesResponse = new FilmesResponse();
   titulo = new FormControl('');
+  paginaAtual: number = 1;
   constructor(private filmeService: FilmeService, private route: ActivatedRoute) { }
   ngOnInit(): void {
-
     this.route.queryParams.subscribe(parametro => {
       var tituloParam = parametro['titulo'] || '';
       this.titulo.setValue(tituloParam);
+      this.pesquisarFilme(1);
 
     })
-// estudar pipes
+
     this.titulo.valueChanges.subscribe(novoTitulo => {
-      this.filmeService.pesquisarFilmeTitulo(novoTitulo || "").subscribe(filmes => {
-        this.filmes = filmes
-      });
+      this.pesquisarFilme(1);
+      this.paginaAtual = 1;
     })
 
+  }
+
+
+  pesquisarFilme(numPagina: number): void {
+    this.filmeService.pesquisarFilmeTitulo(this.titulo.value || "", numPagina).subscribe(filmesResponse => {
+      this.filmesResponse = filmesResponse
+    });
+  }
+
+  alterarPagina(numPagina: number) {
+    
+    if (numPagina <= this.filmesResponse.quantPaginas) {
+       
+      this.paginaAtual = numPagina;
+      this.pesquisarFilme(numPagina);
+      
+
+    }
   }
 
 }

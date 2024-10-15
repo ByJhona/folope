@@ -1,0 +1,30 @@
+<div class="container">
+        <div class="container-capa-filme">
+                <img [src]="filme.urlCapaFundo" alt="Foto da capa do filme" class="capa-filme">
+                <div class="degrade"></div>
+
+        </div>
+
+        <div class="grid">
+
+                <div class="grid-1">
+                        <app-card-g-filme [urlPoster]="filme.urlCapaPoster"></app-card-g-filme>
+                </div>
+                <div class="grid-2">
+                        <div class="info-titulo">
+                                <h1>{{filme.titulo}}</h1>
+                                <p>{{dataLancamento}} | {{filme.duracao}} minutos</p>
+                        </div>
+
+                        <div class="sinopse">
+                        <p>{{filme.sinopse}}</p>
+                        </div>
+
+                </div>
+                <div class="grid-3">
+
+                </div>
+        </div>
+
+
+</div>

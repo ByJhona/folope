@@ -5,23 +5,32 @@ import { FilmeService } from '../../services/filme.service';
 import { FilmeDescoberta } from '../../types/FilmeDescoberta';
 import { NgFor } from '@angular/common';
 import { FilmeDestaqueComponent } from "../../components/filme-destaque/filme-destaque.component";
+import { Filme } from '../../types/Filme';
+import { concatMap, switchMap } from 'rxjs';
+import { PaginatorComponent } from "../../components/paginator/paginator.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NavComponent, CardFilmeComponent, NgFor, FilmeDestaqueComponent],
+  imports: [NavComponent, CardFilmeComponent, NgFor, FilmeDestaqueComponent, PaginatorComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   filmesSemanais: FilmeDescoberta[] = []
-  filmeDestaque!: FilmeDescoberta
+  filmeDestaque!: Filme
   constructor(private filmeService: FilmeService) { }
   ngOnInit(): void {
-    this.filmeService.listarFilmes().subscribe((data) => {
-      this.filmesSemanais = data
-      this.filmeDestaque = data[4]
-      console.log(this.filmeDestaque)
+    this.filmeService.listarFilmes().pipe(
+     switchMap(filmes => {
+      this.filmesSemanais = filmes
+      const idFilme = filmes[0]?.id
+      console.log(idFilme)
+      return this.filmeService.pesquisarFilmeId(idFilme)
+     })
+    )
+    .subscribe((filme) => {
+      this.filmeDestaque = filme
     });
   }
 }

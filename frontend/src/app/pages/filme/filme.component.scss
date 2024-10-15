@@ -1,0 +1,67 @@
+.container {
+    position: relative;
+    width: 100%;
+    height: 500vh;
+    padding-top: 30rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    .container-capa-filme {
+        top: 0;
+        position: absolute;
+        z-index: -5;
+        width: 100%;
+        min-height: 100vh;
+        overflow: hidden;
+
+        .capa-filme {
+            width: 100%;
+            min-height: 90vh;
+            position: absolute;
+            z-index: -9;
+            object-fit: cover;
+        }
+
+        .degrade {
+            position: absolute;
+            bottom: 0;
+            z-index: -4;
+            width: 100%;
+            height: 20%;
+            background: linear-gradient(rgba(255, 255, 255, 0), var(--cor-preto-2) 25%);
+        }
+    }
+
+    .grid {
+        width: 90%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+
+        .grid-1 {
+            position: sticky;
+            top: 2rem;
+            height: 0;
+        }
+
+        .grid-2 {
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+            overflow: hidden;
+
+            .info-titulo{
+                display: flex;
+                flex-direction: column;
+
+            }
+        }
+    }
+
+}
+
+h1{
+    padding: 0;
+    margin: 0;
+}

@@ -1,4 +1,4 @@
-<div class="card-filme">
+<div class="card-filme" (click)="paginaFilme()">
     <div class="info-filme">
         <div class="poster-filme">
             <img [src]="filme.urlCapaPoster" alt="">
@@ -8,15 +8,15 @@
         </div>
 
     </div>
-    
 
-<div class="mascara"></div>
+
+    <div class="mascara"></div>
     <div class="nota-sniper">
 
         <div class="nota">
             <p>{{filme.nota.toFixed(1)}}</p>
         </div>
-        <mat-progress-spinner class="sniper"  mode="determinate" [value]=filme.nota*10 diameter="35">
+        <mat-progress-spinner class="sniper" mode="determinate" [value]=filme.nota*10 diameter="35">
         </mat-progress-spinner>
     </div>
 
