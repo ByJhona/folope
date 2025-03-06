@@ -1,34 +1,30 @@
 <div class="nav">
-    <div class="container">
-        <div class="logo" routerLink="/">
-            <img src="Logo.svg" alt="Logo">
-        </div>
-
-        <app-barra-pesquisar class="barra-pesquisar-desktop"></app-barra-pesquisar>
-
-        <div class="pesquisar-mobile">
-            <button class="bnt-pesquisar-mobile" (click)="trocar()">
-                <img src="search.svg" alt="Botão pesquisar">
-            </button>
-        </div>
-
-
-        
-
-        <app-botao label="Chamar Amigo" icone="group_add" estilo="secundario"></app-botao>
-
-        <div class="login">
-            <button class="bnt-login">
-                <mat-icon>person</mat-icon>
-                <h6>Entrar</h6>
-            </button>
-
-
-        </div>
-
+  <div class="container">
+    <div class="logo" routerLink="/">
+      <img src="Logo.svg" alt="Logo" />
     </div>
+
+    <app-barra-pesquisar class="barra-pesquisar-desktop"></app-barra-pesquisar>
+
+    <div class="pesquisar-mobile">
+      <button class="bnt-pesquisar-mobile" (click)="trocar()">
+        <img src="search.svg" alt="Botão pesquisar" />
+      </button>
+    </div>
+
+    <app-botao
+      label="Chamar Amigo"
+      icone="group_add"
+      estilo="secundario"
+    ></app-botao>
+    <app-botao
+      label="Entrar"
+      icone="person"
+      estilo="sem-fundo"
+      (abrir)="login($event)"
+    ></app-botao>
+  </div>
 </div>
 @if(pesquisar){
-            <app-barra-pesquisar class="barra-pesquisar-mobile"></app-barra-pesquisar>
-
-            }
+<app-barra-pesquisar class="barra-pesquisar-mobile"></app-barra-pesquisar>
+}

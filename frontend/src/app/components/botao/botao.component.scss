@@ -1,4 +1,4 @@
-.botao{
+.botao {
     height: 3rem;
     padding: .5em;
     border-radius: .5rem;
@@ -7,26 +7,30 @@
     justify-content: center;
     align-items: center;
     justify-content: space-evenly;
-    font-weight:550;
-    
+    font-weight: 550;
+    cursor: pointer;
+
 }
 
-.primario{
+.primario {
     background: var(--cor-azul-1);
     color: var(--cor-branco-1);
     border: none;
-    &:hover{
-        border: .1rem var(--cor-azul-1) solid;
-        background-color: transparent;
-        color: var(--cor-azul-1);
-    }
 }
+
 .secundario {
     color: rgb(247, 82, 82);
     border-color: rgb(247, 82, 82);
     background: none;
+
     &:hover {
         background-color: rgb(247, 82, 82);
         color: var(--cor-preto-1);
     }
+}
+
+.sem-fundo{
+    color: var(--cor-cinza-2);
+    border: none;
+    background-color: transparent;
 }

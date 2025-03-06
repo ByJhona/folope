@@ -14,6 +14,7 @@ export class BotaoComponent {
   @Input() estilo:string = "primario"
 
   @Output() abrir: EventEmitter<boolean> = new EventEmitter<boolean>();
+  
   acionarClick():void {
     this.abrir.emit(true);
   }

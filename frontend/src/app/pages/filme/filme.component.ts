@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { Filme } from '../../types/Filme';
-import { Router } from 'express';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { FilmeService } from '../../services/filme.service';
 import { CardGFilmeComponent } from "../../components/card-g-filme/card-g-filme.component";
-import { FilmeInformacaoComponent } from "../../components/filme-informacao/filme-informacao.component";
+import { NavComponent } from '../../components/nav/nav.component';
 
 @Component({
   selector: 'app-filme',
   standalone: true,
-  imports: [CardGFilmeComponent, FilmeInformacaoComponent],
+  imports: [CardGFilmeComponent, NavComponent],
   templateUrl: './filme.component.html',
   styleUrl: './filme.component.scss'
 })
@@ -18,14 +17,14 @@ export class FilmeComponent {
   filme!: Filme
   dataLancamento = ""
 
-  constructor(private filmeService: FilmeService, private route: ActivatedRoute) {
+  constructor(private readonly filmeService: FilmeService, private readonly route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
     this.route.queryParams.pipe(
       switchMap(parametro => {
-        var id = parametro['id'] || 0;
+        let id = parametro['id'] || 0;
         return this.filmeService.pesquisarFilmeId(id);
       })
     ).subscribe(filme => {

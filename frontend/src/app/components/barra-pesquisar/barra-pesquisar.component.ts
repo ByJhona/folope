@@ -4,23 +4,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterLink } from '@angular/router';
-import { query } from 'express';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-barra-pesquisar',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule],
   templateUrl: './barra-pesquisar.component.html',
   styleUrl: './barra-pesquisar.component.scss'
 })
 export class BarraPesquisarComponent {
   pesquisaForm = new FormControl('')
 
-  constructor(private router: Router) { }
-  value = 'Clear me';
+  constructor(private readonly router: Router) { }
 
   pesquisar() {
-    this.router.navigate(['/pesquisar'], {queryParams: {titulo:this.pesquisaForm.value}});
+    this.router.navigate(['/pesquisar'], { queryParams: { titulo: this.pesquisaForm.value } });
   }
 }
