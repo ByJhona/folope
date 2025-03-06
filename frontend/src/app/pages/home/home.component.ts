@@ -9,6 +9,7 @@ import { switchMap } from 'rxjs';
 
 @Component({
     selector: 'app-home',
+    standalone:true,
     imports: [NavComponent, CardFilmeComponent, FilmeDestaqueComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss'
