@@ -6,11 +6,10 @@ import { HomeComponent } from './pages/home/home.component';
 import { ResultadoPesquisaComponent } from './pages/resultado-pesquisa/resultado-pesquisa.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, HomeComponent, ResultadoPesquisaComponent, NavComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [RouterOutlet, HomeComponent, ResultadoPesquisaComponent, NavComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Folope';

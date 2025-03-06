@@ -7,11 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-barra-pesquisar',
-  standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule],
-  templateUrl: './barra-pesquisar.component.html',
-  styleUrl: './barra-pesquisar.component.scss'
+    selector: 'app-barra-pesquisar',
+    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatIconModule],
+    templateUrl: './barra-pesquisar.component.html',
+    styleUrl: './barra-pesquisar.component.scss'
 })
 export class BarraPesquisarComponent {
   pesquisaForm = new FormControl('')

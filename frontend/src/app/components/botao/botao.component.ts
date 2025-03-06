@@ -2,11 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-botao',
-  standalone: true,
-  imports: [MatIcon],
-  templateUrl: './botao.component.html',
-  styleUrl: './botao.component.scss'
+    selector: 'app-botao',
+    imports: [MatIcon],
+    templateUrl: './botao.component.html',
+    styleUrl: './botao.component.scss'
 })
 export class BotaoComponent {
   @Input() label:string = '';

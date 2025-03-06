@@ -5,11 +5,10 @@ import { ModalTrailerComponent } from '../modal-trailer/modal-trailer.component'
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-filme-destaque',
-  standalone: true,
-  imports: [ BotaoComponent, BotaoComponent],
-  templateUrl: './filme-destaque.component.html',
-  styleUrl: './filme-destaque.component.scss'
+    selector: 'app-filme-destaque',
+    imports: [BotaoComponent, BotaoComponent],
+    templateUrl: './filme-destaque.component.html',
+    styleUrl: './filme-destaque.component.scss'
 })
 export class FilmeDestaqueComponent {
   @Input() filme!: FilmeDescoberta

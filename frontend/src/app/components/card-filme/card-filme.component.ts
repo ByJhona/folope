@@ -9,11 +9,10 @@ import { Router, RouterLink } from '@angular/router';
 
 
 @Component({
-  selector: 'app-card-filme',
-  standalone: true,
-  imports: [MatCardModule, MatRadioModule, FormsModule, MatSliderModule, MatProgressSpinnerModule],
-  templateUrl: './card-filme.component.html',
-  styleUrl: './card-filme.component.scss'
+    selector: 'app-card-filme',
+    imports: [MatCardModule, MatRadioModule, FormsModule, MatSliderModule, MatProgressSpinnerModule],
+    templateUrl: './card-filme.component.html',
+    styleUrl: './card-filme.component.scss'
 })
 export class CardFilmeComponent {
   @Input() filme!: FilmeDescoberta;

@@ -8,19 +8,18 @@ import { BotaoComponent } from '../botao/botao.component';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-nav',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    BarraPesquisarComponent,
-    BotaoComponent,
-    RouterLink,
-  ],
-  templateUrl: './nav.component.html',
-  styleUrl: './nav.component.scss',
+    selector: 'app-nav',
+    imports: [
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        BarraPesquisarComponent,
+        BotaoComponent,
+        RouterLink,
+    ],
+    templateUrl: './nav.component.html',
+    styleUrl: './nav.component.scss'
 })
 export class NavComponent {
   pesquisar = false;

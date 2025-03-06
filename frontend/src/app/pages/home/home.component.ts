@@ -8,11 +8,10 @@ import { Filme } from '../../types/Filme';
 import { switchMap } from 'rxjs';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [NavComponent, CardFilmeComponent, FilmeDestaqueComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+    selector: 'app-home',
+    imports: [NavComponent, CardFilmeComponent, FilmeDestaqueComponent],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   filmesSemanais: FilmeDescoberta[] = [];

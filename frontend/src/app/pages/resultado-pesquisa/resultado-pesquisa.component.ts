@@ -9,11 +9,10 @@ import { PaginatorComponent } from "../../components/paginator/paginator.compone
 import { FilmesResponse } from '../../types/FilmesResponse';
 
 @Component({
-  selector: 'app-resultado-pesquisa',
-  standalone: true,
-  imports: [NavComponent, CardFilmeComponent, PaginatorComponent],
-  templateUrl: './resultado-pesquisa.component.html',
-  styleUrl: './resultado-pesquisa.component.scss'
+    selector: 'app-resultado-pesquisa',
+    imports: [NavComponent, CardFilmeComponent, PaginatorComponent],
+    templateUrl: './resultado-pesquisa.component.html',
+    styleUrl: './resultado-pesquisa.component.scss'
 })
 export class ResultadoPesquisaComponent {
   filmesResponse: FilmesResponse = new FilmesResponse();

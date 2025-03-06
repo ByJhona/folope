@@ -7,11 +7,10 @@ import { CardGFilmeComponent } from "../../components/card-g-filme/card-g-filme.
 import { NavComponent } from '../../components/nav/nav.component';
 
 @Component({
-  selector: 'app-filme',
-  standalone: true,
-  imports: [CardGFilmeComponent, NavComponent],
-  templateUrl: './filme.component.html',
-  styleUrl: './filme.component.scss'
+    selector: 'app-filme',
+    imports: [CardGFilmeComponent, NavComponent],
+    templateUrl: './filme.component.html',
+    styleUrl: './filme.component.scss'
 })
 export class FilmeComponent {
   filme!: Filme

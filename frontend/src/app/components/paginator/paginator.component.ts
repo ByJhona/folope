@@ -3,11 +3,10 @@ import { MatIcon } from '@angular/material/icon';
 
 
 @Component({
-  selector: 'app-paginator',
-  standalone: true,
-  imports: [MatIcon],
-  templateUrl: './paginator.component.html',
-  styleUrl: './paginator.component.scss'
+    selector: 'app-paginator',
+    imports: [MatIcon],
+    templateUrl: './paginator.component.html',
+    styleUrl: './paginator.component.scss'
 })
 export class PaginatorComponent {
   @Input() maxPaginas:number = 1;
