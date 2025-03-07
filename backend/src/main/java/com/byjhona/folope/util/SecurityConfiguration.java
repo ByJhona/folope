@@ -21,7 +21,7 @@ public class SecurityConfiguration {
                             authorize.anyRequest().authenticated();
                         })
                 .oauth2Login(Customizer.withDefaults())
-                .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));
+                .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()));
         return http.build();
     }
 }
