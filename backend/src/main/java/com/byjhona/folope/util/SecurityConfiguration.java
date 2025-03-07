@@ -17,6 +17,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         (authorize) -> {
                             authorize.requestMatchers("/seguranca/publico").permitAll();
+                            authorize.requestMatchers("/filme/**").permitAll();
                             authorize.anyRequest().authenticated();
                         })
                 .oauth2Login(Customizer.withDefaults())
