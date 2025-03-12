@@ -44,7 +44,6 @@ public class TmdbAPI {
     }
 
     public FilmeDescobertaResponse buscarFilmesPorTitulo(String parametros) {
-        System.out.println(parametros);
         String filmesString = client.get()
                 .uri("/search/movie" + parametros)
                 .retrieve()

@@ -4,6 +4,7 @@ import com.byjhona.folope.domain.relac_usuario_filme_curtido.RelacUsuarioFilmeCu
 import com.byjhona.folope.domain.relac_usuario_genero_curtido.RelacUsuarioGeneroCurtido;
 import com.byjhona.folope.domain.usuario.Usuario;
 import com.byjhona.folope.domain.usuario.UsuarioDTO;
+import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
 import com.byjhona.folope.service.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class UsuarioController {
     public ResponseEntity<HttpStatus> cadastrar(@RequestBody Usuario usuario) {
         usuarioService.cadastrar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/login")
+    public String entrar(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
+        System.out.println("pqp");
+        return usuarioService.entrar(usuarioLoginDTO);
     }
 
     @GetMapping("/buscar/{id}")

@@ -14,6 +14,6 @@ public class CorsConfiguration implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:4200") // URL do frontend
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
-                .allowedHeaders("*"); // Métodos permitidos
+                .allowedHeaders("*");
     }
 }

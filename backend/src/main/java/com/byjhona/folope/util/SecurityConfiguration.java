@@ -14,11 +14,18 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain cadeiaFiltros(HttpSecurity http) throws Exception {
         http
+
+                .csrf(config -> {
+                    config.ignoringRequestMatchers("/usuario/login");
+                    config.ignoringRequestMatchers("/home");
+                })
                 .authorizeHttpRequests(
                         (authorize) -> {
                             authorize.requestMatchers("/seguranca/publico").permitAll();
+                            authorize.requestMatchers("/usuario/login").permitAll();
+                            authorize.requestMatchers("/home").permitAll();
                             authorize.requestMatchers("/filme/**").permitAll();
-                            authorize.anyRequest().authenticated();
+                            //authorize.anyRequest().authenticated();
                         })
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()));

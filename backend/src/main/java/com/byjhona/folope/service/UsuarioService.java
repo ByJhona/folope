@@ -4,12 +4,12 @@ import com.byjhona.folope.domain.relac_usuario_filme_curtido.RelacUsuarioFilmeCu
 import com.byjhona.folope.domain.relac_usuario_genero_curtido.RelacUsuarioGeneroCurtido;
 import com.byjhona.folope.domain.usuario.Usuario;
 import com.byjhona.folope.domain.usuario.UsuarioDTO;
+import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
 import com.byjhona.folope.exception.NaoEncontradoException;
 import com.byjhona.folope.exception.RelacaoExisteNoBancoException;
 import com.byjhona.folope.repository.RelacUsuarioFilmeCurtidoRepository;
 import com.byjhona.folope.repository.RelacUsuarioGeneroCurtidoRepository;
 import com.byjhona.folope.repository.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,22 @@ public class UsuarioService {
     private RelacUsuarioGeneroCurtidoRepository usuarioGeneroCurtidoRepo;
     @Autowired
     private UsuarioRepository usuarioRepo;
+    @Autowired
+    private KeycloakService keycloakServ;
 
     public void cadastrar(Usuario usuario) {
         boolean existeNoBanco = usuarioRepo.existeNoBanco(usuario);
         if (!existeNoBanco) {
             usuarioRepo.save(usuario);
         } else {
-            throw new RelacaoExisteNoBancoException("O usuario com e-mail: " + usuario.getEmail()+ " já existe.");
+            throw new RelacaoExisteNoBancoException("O usuario com e-mail: " + usuario.getEmail() + " já existe.");
         }
+    }
+
+    public String entrar(UsuarioLoginDTO usuarioLoginDTO) {
+        String token = keycloakServ.gerarTokenEntrar(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
+        System.out.printf(token);
+        return token;
     }
 
     public UsuarioDTO mostrar(Long id) {
