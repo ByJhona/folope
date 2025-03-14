@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -23,12 +25,17 @@ public class SecurityConfiguration {
                         (authorize) -> {
                             authorize.requestMatchers("/seguranca/publico").permitAll();
                             authorize.requestMatchers("/usuario/login").permitAll();
-                            authorize.requestMatchers("/home").permitAll();
+                            authorize.requestMatchers("/home").hasRole("ADMIN");
                             authorize.requestMatchers("/filme/**").permitAll();
-                            //authorize.anyRequest().authenticated();
+                            authorize.anyRequest().authenticated();
                         })
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()));
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder encriptador() {
+        return new BCryptPasswordEncoder();
     }
 }

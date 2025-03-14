@@ -1,1 +1,17 @@
-<p>login works!</p>
+
+    <app-nav></app-nav>
+
+    <div class="container">
+        <h1>Login</h1>
+        <form [formGroup]="this.loginServ.loginForm" (submit)="submeterLogin()" class="formulario">
+            <input type="text" formControlName="nome">
+            <input type="password" formControlName="senha">
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+
+
+
+
+

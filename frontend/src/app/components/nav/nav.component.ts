@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { BarraPesquisarComponent } from '../barra-pesquisar/barra-pesquisar.component';
 import { BotaoComponent } from '../botao/botao.component';
 import { Router, RouterLink } from '@angular/router';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-nav',
@@ -23,8 +24,18 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class NavComponent {
   pesquisar = false;
+  nomeUsuario: string | null = null;
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    public readonly tokenServ: TokenService
+  ) {}
+  
+  ngOnInit(): void {
+    if (this.tokenServ.validarToken()) {
+      this.nomeUsuario = this.tokenServ.obterNomeUsuario();
+    }
+  }
 
   trocar() {
     this.pesquisar = !this.pesquisar;

@@ -27,7 +27,6 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public String entrar(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
-        System.out.println("pqp");
         return usuarioService.entrar(usuarioLoginDTO);
     }
 

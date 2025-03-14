@@ -1,7 +1,7 @@
 <div class="pesquisar">
-    <form class="form-pesquisar">
+    <form class="form-pesquisar" (submit)="pesquisar($event)">
         <input type="text" class="input-pesquisar" placeholder="Pesquisar filme..." [formControl]="pesquisaForm">
-        <button class="bnt-pesquisar"  (click)="pesquisar()" type="submit">
+        <button class="bnt-pesquisar"  type="submit">
             <img src="search.svg" alt="Botão pesquisar">
         </button>
     </form>

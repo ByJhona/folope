@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Filme } from '../../types/Filme';
 import { CardGFilmeComponent } from '../card-g-filme/card-g-filme.component';
+import { NavComponent } from "../nav/nav.component";
 
 @Component({
     selector: 'app-filme-informacao',
-    imports: [CardGFilmeComponent],
+    imports: [CardGFilmeComponent, NavComponent],
     templateUrl: './filme-informacao.component.html',
     styleUrl: './filme-informacao.component.scss'
 })

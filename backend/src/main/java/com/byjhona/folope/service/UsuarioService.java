@@ -11,6 +11,9 @@ import com.byjhona.folope.repository.RelacUsuarioFilmeCurtidoRepository;
 import com.byjhona.folope.repository.RelacUsuarioGeneroCurtidoRepository;
 import com.byjhona.folope.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +26,8 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepo;
     @Autowired
     private KeycloakService keycloakServ;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public void cadastrar(Usuario usuario) {
         boolean existeNoBanco = usuarioRepo.existeNoBanco(usuario);
@@ -34,9 +39,10 @@ public class UsuarioService {
     }
 
     public String entrar(UsuarioLoginDTO usuarioLoginDTO) {
-        String token = keycloakServ.gerarTokenEntrar(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
-        System.out.printf(token);
-        return token;
+        //String token = keycloakServ.gerarTokenEntrar(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
+        UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.unauthenticated(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
+        Authentication authentitcationResponse = this.authenticationManager.authenticate(authenticationToken);
+        return (String) authentitcationResponse.getCredentials();
     }
 
     public UsuarioDTO mostrar(Long id) {

@@ -4,13 +4,14 @@ import { FilmeDescoberta } from '../types/FilmeDescoberta';
 import { Observable } from 'rxjs';
 import { FilmesResponse } from '../types/FilmesResponse';
 import { Filme } from '../types/Filme';
+import { environment } from '../../environments/environment.development';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilmeService {
-  private readonly apiUrl: string = 'http://localhost:8080/filme';
+  private readonly apiUrl: string = environment.apiUrl+ "/filme";
   constructor(private readonly httpClient:HttpClient) { }
 
   listarFilmes():Observable<FilmeDescoberta[]>{

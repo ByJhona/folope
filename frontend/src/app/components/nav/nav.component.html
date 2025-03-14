@@ -17,12 +17,17 @@
       icone="group_add"
       estilo="secundario"
     ></app-botao>
+
+    @if(this.tokenServ.validarToken()){
+    <h1>{{ nomeUsuario}}</h1>
+    }@else{
     <app-botao
       label="Entrar"
       icone="person"
       estilo="sem-fundo"
       (abrir)="login($event)"
     ></app-botao>
+    }
   </div>
 </div>
 @if(pesquisar){

@@ -17,7 +17,8 @@ export class BarraPesquisarComponent {
 
   constructor(private readonly router: Router) { }
 
-  pesquisar() {
+  pesquisar(event: Event) {
+    event.preventDefault(); 
     this.router.navigate(['/pesquisar'], { queryParams: { titulo: this.pesquisaForm.value } });
   }
 }

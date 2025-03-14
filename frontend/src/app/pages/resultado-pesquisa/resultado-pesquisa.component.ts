@@ -5,10 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { PaginatorComponent } from '../../components/paginator/paginator.component';
 import { FilmesResponse } from '../../types/FilmesResponse';
+import { NavComponent } from '../../components/nav/nav.component';
 
 @Component({
   selector: 'app-resultado-pesquisa',
-  imports: [ CardFilmeComponent, PaginatorComponent],
+  imports: [ CardFilmeComponent, PaginatorComponent, NavComponent],
   templateUrl: './resultado-pesquisa.component.html',
   styleUrl: './resultado-pesquisa.component.scss',
 })
