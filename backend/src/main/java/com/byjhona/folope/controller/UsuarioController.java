@@ -2,7 +2,8 @@ package com.byjhona.folope.controller;
 
 import com.byjhona.folope.domain.relac_usuario_filme_curtido.RelacUsuarioFilmeCurtido;
 import com.byjhona.folope.domain.relac_usuario_genero_curtido.RelacUsuarioGeneroCurtido;
-import com.byjhona.folope.domain.usuario.Usuario;
+import com.byjhona.folope.domain.token.TokenDTO;
+import com.byjhona.folope.domain.usuario.UsuarioCadastroDTO;
 import com.byjhona.folope.domain.usuario.UsuarioDTO;
 import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
 import com.byjhona.folope.service.UsuarioService;
@@ -20,14 +21,14 @@ public class UsuarioController {
 
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<HttpStatus> cadastrar(@RequestBody Usuario usuario) {
+    public ResponseEntity<HttpStatus> cadastrar(@RequestBody UsuarioCadastroDTO usuario) {
         usuarioService.cadastrar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
-    public String entrar(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
-        return usuarioService.entrar(usuarioLoginDTO);
+    public ResponseEntity<TokenDTO> entrar(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
+        return ResponseEntity.ok().body(usuarioService.entrar(usuarioLoginDTO));
     }
 
     @GetMapping("/buscar/{id}")

@@ -2,7 +2,9 @@ package com.byjhona.folope.service;
 
 import com.byjhona.folope.domain.relac_usuario_filme_curtido.RelacUsuarioFilmeCurtido;
 import com.byjhona.folope.domain.relac_usuario_genero_curtido.RelacUsuarioGeneroCurtido;
+import com.byjhona.folope.domain.token.TokenDTO;
 import com.byjhona.folope.domain.usuario.Usuario;
+import com.byjhona.folope.domain.usuario.UsuarioCadastroDTO;
 import com.byjhona.folope.domain.usuario.UsuarioDTO;
 import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
 import com.byjhona.folope.exception.NaoEncontradoException;
@@ -10,10 +12,13 @@ import com.byjhona.folope.exception.RelacaoExisteNoBancoException;
 import com.byjhona.folope.repository.RelacUsuarioFilmeCurtidoRepository;
 import com.byjhona.folope.repository.RelacUsuarioGeneroCurtidoRepository;
 import com.byjhona.folope.repository.UsuarioRepository;
+import com.byjhona.folope.service.autorizacao.AutenticacaoUsuario;
+import com.byjhona.folope.service.token.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,24 +30,22 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepo;
     @Autowired
-    private KeycloakService keycloakServ;
-    @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenService tokenServ;
 
-    public void cadastrar(Usuario usuario) {
-        boolean existeNoBanco = usuarioRepo.existeNoBanco(usuario);
-        if (!existeNoBanco) {
-            usuarioRepo.save(usuario);
-        } else {
-            throw new RelacaoExisteNoBancoException("O usuario com e-mail: " + usuario.getEmail() + " já existe.");
-        }
+
+    public void cadastrar(UsuarioCadastroDTO usuarioDTO) {
+        String senhaEncriptada = new BCryptPasswordEncoder().encode(usuarioDTO.senha());
+        Usuario usuario = new Usuario(usuarioDTO.nome(), usuarioDTO.email(), senhaEncriptada);
+        usuarioRepo.save(usuario);
     }
 
-    public String entrar(UsuarioLoginDTO usuarioLoginDTO) {
-        //String token = keycloakServ.gerarTokenEntrar(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
-        UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.unauthenticated(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
-        Authentication authentitcationResponse = this.authenticationManager.authenticate(authenticationToken);
-        return (String) authentitcationResponse.getCredentials();
+    public TokenDTO entrar(UsuarioLoginDTO usuarioLoginDTO) {
+        UsernamePasswordAuthenticationToken usuarioSenhaAuth = new UsernamePasswordAuthenticationToken(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
+        Authentication autenticado = authenticationManager.authenticate(usuarioSenhaAuth);
+        String token = tokenServ.gerarToken((AutenticacaoUsuario) autenticado.getPrincipal());
+        return new TokenDTO(token);
     }
 
     public UsuarioDTO mostrar(Long id) {

@@ -1,41 +1,53 @@
 package com.byjhona.folope.util;
 
+import com.byjhona.folope.service.autorizacao.FiltrosSeguranca;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private FiltrosSeguranca filtrosSeguranca;
+
     @Bean
     public SecurityFilterChain cadeiaFiltros(HttpSecurity http) throws Exception {
         http
-
-                .csrf(config -> {
-                    config.ignoringRequestMatchers("/usuario/login");
-                    config.ignoringRequestMatchers("/home");
-                })
+                .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         (authorize) -> {
-                            authorize.requestMatchers("/seguranca/publico").permitAll();
                             authorize.requestMatchers("/usuario/login").permitAll();
+                            authorize.requestMatchers("/usuario/cadastrar").permitAll();
                             authorize.requestMatchers("/home").hasRole("ADMIN");
                             authorize.requestMatchers("/filme/**").permitAll();
                             authorize.anyRequest().authenticated();
                         })
-                .oauth2Login(Customizer.withDefaults())
-                .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()));
+                .addFilterBefore(filtrosSeguranca, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public PasswordEncoder encriptador() {
         return new BCryptPasswordEncoder();
     }
+
 }
