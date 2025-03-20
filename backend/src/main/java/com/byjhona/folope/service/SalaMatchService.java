@@ -32,7 +32,7 @@ public class SalaMatchService {
     @Autowired
     private RelacSalaMatchFilmesRepository salaMatchFilmesRepo;
     @Autowired
-    private TmdbAPI tmdbAPI;
+    private TmdbAPIService tmdbAPIService;
     @Autowired
     private RelacUsuarioGeneroCurtidoRepository usuarioGeneroRepo;
     @Autowired
@@ -55,7 +55,7 @@ public class SalaMatchService {
             escolherFilmesSala(salaMatch);
             return new SalaMatchDTO(salaMatch);
         } catch (Exception ex) {
-            throw new NaoEncontradoException("O usúario de id: " + idAnfitriao + " ou id : "+ idHospede + " não encontrado.");
+            throw new NaoEncontradoException("O usúario de id: " + idAnfitriao + " ou id : " + idHospede + " não encontrado.");
         }
     }
 
@@ -71,17 +71,17 @@ public class SalaMatchService {
 
         List<FilmeDescobertaDTO> filmesRecomedacaoAnfitriao;
         List<FilmeDescobertaDTO> filmesRecomedacaoHospede;
-        List<FilmeDescobertaDTO> filmesDescoberta = tmdbAPI.buscarFilmesDescoberta(generos);
+        List<FilmeDescobertaDTO> filmesDescoberta = tmdbAPIService.buscarFilmesDescoberta(generos);
         List<FilmeDescobertaDTO> filmesSala = new ArrayList<FilmeDescobertaDTO>();
 
         filmesSala.addAll(filmesDescoberta);
 
         if (recomendacaoAnfitriao != null) {
-            filmesRecomedacaoAnfitriao = tmdbAPI.buscarFilmesRecomendacao(recomendacaoAnfitriao);
+            filmesRecomedacaoAnfitriao = tmdbAPIService.buscarFilmesRecomendacao(recomendacaoAnfitriao);
             filmesSala.addAll(filmesRecomedacaoAnfitriao);
         }
         if (recomendacaoHospede != null) {
-            filmesRecomedacaoHospede = tmdbAPI.buscarFilmesRecomendacao(recomendacaoHospede);
+            filmesRecomedacaoHospede = tmdbAPIService.buscarFilmesRecomendacao(recomendacaoHospede);
             filmesSala.addAll(filmesRecomedacaoHospede);
         }
 
@@ -111,7 +111,7 @@ public class SalaMatchService {
         int quantFilmes = filmesLista.size();
         List<FilmeDescobertaDTO> filmesTratados = filmesLista.stream().distinct().collect(Collectors.toList());
         while (quantFilmes < limiarFilmes && maxTentativas > 0) {
-            List<FilmeDescobertaDTO> filmesExtras = tmdbAPI.buscarFilmesDescoberta();
+            List<FilmeDescobertaDTO> filmesExtras = tmdbAPIService.buscarFilmesDescoberta();
             filmesExtras = filmesExtras.stream().distinct().toList();
             filmesTratados.addAll(filmesExtras);
             quantFilmes = filmesTratados.size();

@@ -1,6 +1,5 @@
-package com.byjhona.folope.service.autorizacao;
+package com.byjhona.folope.autorizacao;
 
-import com.byjhona.folope.domain.usuario.Usuario;
 import com.byjhona.folope.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +14,6 @@ public class AutorizacaoUsuarioService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepo.findByNome(username);
-
-        return new AutenticacaoUsuario(usuario);
+        return usuarioRepo.findByNome(username);
     }
 }

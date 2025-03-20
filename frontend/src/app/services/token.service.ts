@@ -8,13 +8,17 @@ import { JwtPayload } from '../types/JwtPayload';
 export class TokenService {
   private token: string | null = null;
 
+  constructor() {
+    this.token = sessionStorage.getItem('token');
+  }
+
   obterToken(): string | null {
-    return this.token ?? localStorage.getItem('token');
+    return this.token ?? sessionStorage.getItem('token');
   }
 
   definirToken(token: string): void {
     this.token = token;
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
   }
 
   apagarToken(): void {
@@ -26,10 +30,10 @@ export class TokenService {
   }
 
   obterNomeUsuario() {
-    const token = this.token ?? localStorage.getItem('token') ?? "Thias";
-    
-      const jwt = jwtDecode<JwtPayload>(token);
-      console.log(jwt)
-      return jwt.name;
+    const token = this.token ?? sessionStorage.getItem('token') ?? 'Thias';
+
+    const jwt = jwtDecode<JwtPayload>(token);
+    console.log(jwt);
+    return jwt.name;
   }
 }

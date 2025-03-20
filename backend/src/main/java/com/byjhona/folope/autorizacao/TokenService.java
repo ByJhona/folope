@@ -1,10 +1,10 @@
-package com.byjhona.folope.service.token;
+package com.byjhona.folope.autorizacao;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.byjhona.folope.service.autorizacao.AutenticacaoUsuario;
+import com.byjhona.folope.domain.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,12 @@ public class TokenService {
     @Value("${folope.chave.criptografia}")
     private String chave;
 
-    public String gerarToken(AutenticacaoUsuario autenticacaoUsuariousuario) {
+    public String gerarToken(Usuario usuario) {
         try {
             Algorithm algoritmo = Algorithm.HMAC256(this.chave);
             return JWT.create()
                     .withIssuer("API Folope")
-                    .withSubject(autenticacaoUsuariousuario.getUsername())
+                    .withSubject(usuario.getUsername())
                     .withExpiresAt(gerarTempoExpiracao())
                     .sign(algoritmo);
         } catch (JWTCreationException ex) {

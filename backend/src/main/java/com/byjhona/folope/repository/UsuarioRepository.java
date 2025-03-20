@@ -4,16 +4,27 @@ import com.byjhona.folope.domain.usuario.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query("""
             select EXISTS(
                 select usuario from usuario usuario
                 where
-                usuario.email = ?#{#usuario.email}
+                usuario.email = :email
             )
             """)
-    boolean existeNoBanco(@Param("usuario") Usuario usuario);
+    boolean emailExisteNoBanco(@Param("email") String email);
 
-    Usuario findByNome(String nome);
+
+    @Query("""
+            select EXISTS(
+                select usuario from usuario usuario
+                where
+                usuario.identificador = :identificador
+            )
+            """)
+    boolean identificadorExisteNoBanco(@Param("identificador") String identificador);
+
+    UserDetails findByNome(String identificador);
 }

@@ -1,4 +1,4 @@
-package com.byjhona.folope.util;
+package com.byjhona.folope.configuracao;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

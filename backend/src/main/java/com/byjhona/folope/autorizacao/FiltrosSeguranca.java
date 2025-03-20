@@ -1,6 +1,6 @@
-package com.byjhona.folope.service.autorizacao;
+package com.byjhona.folope.autorizacao;
 
-import com.byjhona.folope.service.token.TokenService;
+import com.byjhona.folope.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +22,8 @@ public class FiltrosSeguranca extends OncePerRequestFilter {
     private AutorizacaoUsuarioService autorizacaoUsuarioService;
     @Autowired
     private TokenService tokenServ;
+    @Autowired
+    private UsuarioRepository usuarioRepo;
 
 
     private String recuperarToken(HttpServletRequest request) {
@@ -37,7 +39,7 @@ public class FiltrosSeguranca extends OncePerRequestFilter {
 
         if (token != null) {
             var nome = tokenServ.validarToken(token);
-            UserDetails usuario = autorizacaoUsuarioService.loadUserByUsername(nome);
+            UserDetails usuario = usuarioRepo.findByNome(nome);
             Authentication autenticacao = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(autenticacao);
         }

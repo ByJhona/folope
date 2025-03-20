@@ -1,6 +1,6 @@
-package com.byjhona.folope.util;
+package com.byjhona.folope.configuracao;
 
-import com.byjhona.folope.service.autorizacao.FiltrosSeguranca;
+import com.byjhona.folope.autorizacao.FiltrosSeguranca;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

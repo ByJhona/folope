@@ -1,6 +1,7 @@
 create table usuario(
     id SERIAL not null,
-    nome varchar(100) unique,
+    nome varchar(100),
+    identificador varchar(100) unique,
     email varchar(100) unique,
     senha varchar(100),
     role varchar(50),

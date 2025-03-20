@@ -1,5 +1,6 @@
 package com.byjhona.folope.service;
 
+import com.byjhona.folope.autorizacao.TokenService;
 import com.byjhona.folope.domain.relac_usuario_filme_curtido.RelacUsuarioFilmeCurtido;
 import com.byjhona.folope.domain.relac_usuario_genero_curtido.RelacUsuarioGeneroCurtido;
 import com.byjhona.folope.domain.token.TokenDTO;
@@ -7,13 +8,12 @@ import com.byjhona.folope.domain.usuario.Usuario;
 import com.byjhona.folope.domain.usuario.UsuarioCadastroDTO;
 import com.byjhona.folope.domain.usuario.UsuarioDTO;
 import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
+import com.byjhona.folope.exception.EmailExisteNoBancoException;
 import com.byjhona.folope.exception.NaoEncontradoException;
 import com.byjhona.folope.exception.RelacaoExisteNoBancoException;
 import com.byjhona.folope.repository.RelacUsuarioFilmeCurtidoRepository;
 import com.byjhona.folope.repository.RelacUsuarioGeneroCurtidoRepository;
 import com.byjhona.folope.repository.UsuarioRepository;
-import com.byjhona.folope.service.autorizacao.AutenticacaoUsuario;
-import com.byjhona.folope.service.token.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,15 +36,29 @@ public class UsuarioService {
 
 
     public void cadastrar(UsuarioCadastroDTO usuarioDTO) {
+
+        boolean emailDuplicado = usuarioRepo.emailExisteNoBanco(usuarioDTO.email());
+        boolean identificadorDuplicado = usuarioRepo.identificadorExisteNoBanco(usuarioDTO.identificador());
+
+        if (identificadorDuplicado) {
+            throw new EmailExisteNoBancoException("O ID '%s' está sendo usado por outra pessoa", usuarioDTO.identificador());
+        }
+
+        if (emailDuplicado) {
+            throw new EmailExisteNoBancoException("O email '%s' está sendo usado por outra pessoa", usuarioDTO.email());
+        }
+
         String senhaEncriptada = new BCryptPasswordEncoder().encode(usuarioDTO.senha());
-        Usuario usuario = new Usuario(usuarioDTO.nome(), usuarioDTO.email(), senhaEncriptada);
+        Usuario usuario = new Usuario(usuarioDTO.identificador(), usuarioDTO.nome(), usuarioDTO.email(), senhaEncriptada);
         usuarioRepo.save(usuario);
+
+
     }
 
     public TokenDTO entrar(UsuarioLoginDTO usuarioLoginDTO) {
-        UsernamePasswordAuthenticationToken usuarioSenhaAuth = new UsernamePasswordAuthenticationToken(usuarioLoginDTO.nome(), usuarioLoginDTO.senha());
+        UsernamePasswordAuthenticationToken usuarioSenhaAuth = new UsernamePasswordAuthenticationToken(usuarioLoginDTO.identificador(), usuarioLoginDTO.senha());
         Authentication autenticado = authenticationManager.authenticate(usuarioSenhaAuth);
-        String token = tokenServ.gerarToken((AutenticacaoUsuario) autenticado.getPrincipal());
+        String token = tokenServ.gerarToken((Usuario) autenticado.getPrincipal());
         return new TokenDTO(token);
     }
 
@@ -59,7 +73,7 @@ public class UsuarioService {
         boolean existeFilmeNoBanco = usuarioFilmeCurtidoRepo.existeNoBanco(filmeCurtido);
 
         try {
-            usuarioRepo.existeNoBanco(usuario);
+            //usuarioRepo.existeNoBanco(usuario);
         } catch (Exception ex) {
             throw new NaoEncontradoException("O usúario de id: " + idUsuario + " não foi encontrado.");
         }
@@ -78,7 +92,7 @@ public class UsuarioService {
         boolean existeGeneroNoBanco = usuarioGeneroCurtidoRepo.existeNoBanco(generoCur);
 
         try {
-            usuarioRepo.existeNoBanco(usuario);
+            //usuarioRepo.existeNoBanco(usuario);
         } catch (Exception ex) {
             throw new NaoEncontradoException("O usúario de id: " + idUsuario + " não foi encontrado.");
         }

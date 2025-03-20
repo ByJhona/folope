@@ -17,12 +17,12 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class TmdbAPI {
+public class TmdbAPIService {
     private final WebClient client;
     @Autowired
     private ObjectMapper json;
 
-    public TmdbAPI(WebClient.Builder builder) {
+    public TmdbAPIService(WebClient.Builder builder) {
         this.client = builder
                 .baseUrl("https://api.themoviedb.org/3")
                 .defaultHeaders(httpHeaders -> {
