@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -30,22 +29,16 @@ public class FiltrosSeguranca extends OncePerRequestFilter {
     @Autowired
     private UsuarioRepository usuarioRepo;
 
-
     private Optional<String> recuperarToken(HttpServletRequest request) {
-
-        List<Cookie> cookies = List.of(request.getCookies());
-
-        if (!cookies.isEmpty()) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     return Optional.of(cookie.getValue());
                 }
             }
-
         }
-
         return Optional.empty();
-
     }
 
     private void adicionarCookie(HttpServletResponse response, String token) {

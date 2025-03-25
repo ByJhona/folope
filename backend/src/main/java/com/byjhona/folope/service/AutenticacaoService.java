@@ -2,12 +2,13 @@ package com.byjhona.folope.service;
 
 import com.byjhona.folope.autorizacao.AutorizacaoUsuario;
 import com.byjhona.folope.autorizacao.TokenService;
-import com.byjhona.folope.domain.token.TokenDTO;
 import com.byjhona.folope.domain.usuario.Usuario;
 import com.byjhona.folope.domain.usuario.UsuarioCadastroDTO;
 import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
 import com.byjhona.folope.exception.EmailExisteNoBancoException;
 import com.byjhona.folope.repository.UsuarioRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,10 +43,22 @@ public class AutenticacaoService {
         usuarioRepo.save(usuario);
     }
 
-    public TokenDTO entrar(UsuarioLoginDTO usuarioLoginDTO) {
+    public void entrar(UsuarioLoginDTO usuarioLoginDTO, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken usuarioSenhaAuth = new UsernamePasswordAuthenticationToken(usuarioLoginDTO.identificador(), usuarioLoginDTO.senha());
         Authentication autenticado = authenticationManager.authenticate(usuarioSenhaAuth);
         String token = tokenServ.gerarToken((AutorizacaoUsuario) autenticado.getPrincipal());
-        return new TokenDTO(token);
+
+        adicionarCookie(response, token);
+
     }
+
+    private void adicionarCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(3600);
+        response.addCookie(cookie);
+    }
+
+
 }

@@ -1,9 +1,9 @@
 package com.byjhona.folope.controller;
 
-import com.byjhona.folope.domain.token.TokenDTO;
 import com.byjhona.folope.domain.usuario.UsuarioCadastroDTO;
 import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
 import com.byjhona.folope.service.AutenticacaoService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +23,9 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> entrar(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
-        TokenDTO token = autenticacaoServ.entrar(usuarioLoginDTO);
-        return ResponseEntity.ok().body(token);
+    public ResponseEntity<HttpStatus> entrar(@RequestBody UsuarioLoginDTO usuarioLoginDTO, HttpServletResponse response) {
+        autenticacaoServ.entrar(usuarioLoginDTO, response);
+        return ResponseEntity.ok().build();
     }
 
 
