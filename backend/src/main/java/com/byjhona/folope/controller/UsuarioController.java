@@ -1,16 +1,15 @@
 package com.byjhona.folope.controller;
 
+import com.byjhona.folope.autorizacao.AutorizacaoUsuario;
 import com.byjhona.folope.domain.relac_usuario_filme_curtido.RelacUsuarioFilmeCurtido;
 import com.byjhona.folope.domain.relac_usuario_genero_curtido.RelacUsuarioGeneroCurtido;
-import com.byjhona.folope.domain.token.TokenDTO;
-import com.byjhona.folope.domain.usuario.UsuarioCadastroDTO;
 import com.byjhona.folope.domain.usuario.UsuarioDTO;
-import com.byjhona.folope.domain.usuario.UsuarioLoginDTO;
 import com.byjhona.folope.service.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,16 +19,12 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<HttpStatus> cadastrar(@RequestBody UsuarioCadastroDTO usuario) {
-        usuarioService.cadastrar(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @GetMapping("/obter-usuario")
+    public ResponseEntity<UsuarioDTO> obterInformacoesUsuario(@AuthenticationPrincipal AutorizacaoUsuario usuario) {
+        System.out.println(usuario.getUsuario().getNome());
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenDTO> entrar(@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
-        return ResponseEntity.ok().body(usuarioService.entrar(usuarioLoginDTO));
-    }
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<UsuarioDTO> mostrar(@PathVariable Long id) {

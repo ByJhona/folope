@@ -2,7 +2,7 @@
 <div class="container">
     <div class="container-conteudo">
         <div class="titulo-paginator">
-            <h6 class="titulo">Filmes encontrados: {{titulo.value}}</h6>
+            <h6 class="titulo">Filmes : {{titulo.value}}</h6>
             <app-paginator (alterarPagina)="alterarPagina($event)" [maxPaginas]="filmesResponse.quantPaginas"
                 [paginaAtual]="paginaAtual"></app-paginator>
         </div>

@@ -69,7 +69,6 @@ public class TmdbAPIService {
 
 
     public List<FilmeDescobertaDTO> buscarFilmesDescoberta(String parametros) {
-        System.out.println(parametros);
         String filmesString = client.get()
                 .uri("/discover/movie" + parametros)
                 .retrieve()

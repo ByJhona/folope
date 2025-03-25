@@ -11,7 +11,7 @@ export class AutenticacaoService {
   private readonly apiUrl: string = environment.apiUrl;
   constructor(private readonly httpClient: HttpClient) {}
 
-  login(nome :string, senha:string):Observable<Token>{
-    return this.httpClient.post<Token>(this.apiUrl + "/usuario/login", {"nome": nome, "senha":senha});
+  login(identificador :string, senha:string):Observable<Token>{
+    return this.httpClient.post<Token>(this.apiUrl + "/login", {"identificador": identificador, "senha":senha});
   }
 }

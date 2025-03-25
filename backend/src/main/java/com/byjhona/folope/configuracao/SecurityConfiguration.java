@@ -30,10 +30,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         (authorize) -> {
-                            authorize.requestMatchers("/usuario/login").permitAll();
-                            authorize.requestMatchers("/usuario/cadastrar").permitAll();
-                            authorize.requestMatchers("/home").hasRole("ADMIN");
+                            authorize.requestMatchers("/login", "/cadastrar").permitAll();
                             authorize.requestMatchers("/filme/**").permitAll();
+                            authorize.requestMatchers("/").permitAll();
                             authorize.anyRequest().authenticated();
                         })
                 .addFilterBefore(filtrosSeguranca, UsernamePasswordAuthenticationFilter.class);

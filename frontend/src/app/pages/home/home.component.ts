@@ -24,7 +24,7 @@ export class HomeComponent {
       .pipe(
         switchMap((filmes) => {
           this.filmesSemanais = filmes;
-          const idFilme = filmes[6]?.id;
+          const idFilme = filmes[7]?.id;
           console.log(idFilme);
           return this.filmeService.pesquisarFilmeId(idFilme);
         })

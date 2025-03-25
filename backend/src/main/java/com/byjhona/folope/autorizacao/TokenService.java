@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.byjhona.folope.domain.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class TokenService {
     @Value("${folope.chave.criptografia}")
     private String chave;
 
-    public String gerarToken(Usuario usuario) {
+    public String gerarToken(AutorizacaoUsuario usuario) {
         try {
             Algorithm algoritmo = Algorithm.HMAC256(this.chave);
             return JWT.create()

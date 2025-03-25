@@ -8,12 +8,8 @@ import { JwtPayload } from '../types/JwtPayload';
 export class TokenService {
   private token: string | null = null;
 
-  constructor() {
-    this.token = sessionStorage.getItem('token');
-  }
-
-  obterToken(): string | null {
-    return this.token ?? sessionStorage.getItem('token');
+  obterToken(): string {
+    return this.token ?? sessionStorage.getItem('token') ?? "";
   }
 
   definirToken(token: string): void {
@@ -34,6 +30,6 @@ export class TokenService {
 
     const jwt = jwtDecode<JwtPayload>(token);
     console.log(jwt);
-    return jwt.name;
+    return jwt.sub;
   }
 }

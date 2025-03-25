@@ -15,6 +15,8 @@ export class FilmeService {
   constructor(private readonly httpClient:HttpClient) { }
 
   listarFilmes():Observable<FilmeDescoberta[]>{
+  
+
     return this.httpClient.get<FilmeDescoberta[]>(this.apiUrl+'/buscar');
   }
 
@@ -24,6 +26,7 @@ export class FilmeService {
   }
 
   pesquisarFilmeId(id:number):Observable<Filme>{
+   
     return this.httpClient.get<Filme>(this.apiUrl+'/buscar/id?id='+id);
 
   }
