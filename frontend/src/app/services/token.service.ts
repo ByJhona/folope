@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { JwtPayload } from '../types/JwtPayload';
+import { SsrCookieService } from 'ngx-cookie-service-ssr';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +9,14 @@ import { JwtPayload } from '../types/JwtPayload';
 export class TokenService {
   private token: string | null = null;
 
+  constructor(private readonly cookieService: SsrCookieService) {}
+
   obterToken(): string {
-    return this.token ?? sessionStorage.getItem('token') ?? "";
+    return this.cookieService.get('token');
+  }
+
+  verificarToken(): boolean {
+    return this.cookieService.check('token');
   }
 
   definirToken(token: string): void {

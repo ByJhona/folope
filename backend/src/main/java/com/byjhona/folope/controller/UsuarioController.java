@@ -21,14 +21,13 @@ public class UsuarioController {
 
     @GetMapping("/obter-usuario")
     public ResponseEntity<UsuarioDTO> obterInformacoesUsuario(@AuthenticationPrincipal AutorizacaoUsuario usuario) {
-        System.out.println(usuario.getUsuario().getNome());
-        return ResponseEntity.ok().build();
+        UsuarioDTO usuarioDTO = usuarioService.obterUsuarioPorIdentificador(usuario.getUsername()).orElseThrow();
+        return ResponseEntity.ok().body(usuarioDTO);
     }
-
-
+    
     @GetMapping("/buscar/{id}")
     public ResponseEntity<UsuarioDTO> mostrar(@PathVariable Long id) {
-        UsuarioDTO usuarioDTO = usuarioService.mostrar(id);
+        UsuarioDTO usuarioDTO = usuarioService.obterUsuarioPorID(id);
         return ResponseEntity.ok().body(usuarioDTO);
     }
 

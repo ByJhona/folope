@@ -8,6 +8,7 @@ import { BotaoComponent } from '../botao/botao.component';
 import { Router, RouterLink } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../types/Usuario';
+import { AutenticacaoService } from '../../services/autenticacao.service';
 
 @Component({
   selector: 'app-nav',
@@ -27,12 +28,19 @@ export class NavComponent {
   pesquisar = false;
   nomeUsuario: string | null = null;
   usuario: Usuario | null = null;
+  ehAutenticado = false;
 
   constructor(
     private readonly router: Router,
-    public readonly usuarioServ: UsuarioService
+    private readonly usuarioServ: UsuarioService,
+    private readonly autenticacaoServ: AutenticacaoService
   ) {
-    
+    this.usuarioServ.usuario$.subscribe((usuario) => {
+      this.usuario = usuario;
+    });
+    this.autenticacaoServ.ehAutenticado$.subscribe((estado:boolean) => {
+      this.ehAutenticado = estado;
+    });
   }
 
   trocar() {

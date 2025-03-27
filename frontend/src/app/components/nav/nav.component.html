@@ -17,7 +17,7 @@
       icone="group_add"
       estilo="secundario"
     ></app-botao>
-    @if(usuario){<h2>{{usuario.identificador}}</h2> }@else {
+    @if(ehAutenticado){<h2>{{ehAutenticado}}</h2> }@else {
     <app-botao
       label="Entrar"
       icone="person"

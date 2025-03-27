@@ -6,6 +6,7 @@ import { FilmeDescoberta } from '../../types/FilmeDescoberta';
 import { FilmeDestaqueComponent } from '../../components/filme-destaque/filme-destaque.component';
 import { Filme } from '../../types/Filme';
 import { switchMap } from 'rxjs';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
     selector: 'app-home',
@@ -17,20 +18,24 @@ import { switchMap } from 'rxjs';
 export class HomeComponent {
   filmesSemanais: FilmeDescoberta[] = [];
   filmeDestaque!: Filme;
-  constructor(private readonly filmeService: FilmeService) {}
+  constructor(private readonly filmeServ: FilmeService, private readonly usuarioServ:UsuarioService) {}
   ngOnInit(): void {
-    this.filmeService
+    this.filmeServ
       .listarFilmes()
       .pipe(
         switchMap((filmes) => {
           this.filmesSemanais = filmes;
           const idFilme = filmes[7]?.id;
           console.log(idFilme);
-          return this.filmeService.pesquisarFilmeId(idFilme);
+          return this.filmeServ.pesquisarFilmeId(idFilme);
         })
       )
       .subscribe((filme) => {
         this.filmeDestaque = filme;
       });
+
+        this.usuarioServ.obterUsuario();
+    
+  
   }
 }
