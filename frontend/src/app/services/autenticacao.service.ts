@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +26,15 @@ export class AutenticacaoService {
       .get<boolean>(this.apiUrl + '/usuario-autenticado', {
         withCredentials: true,
       })
+      .pipe(
+        catchError(() => {
+          this.ehAutenticado.next(false);
+          return of(false); // Evita que o Angular trate como erro
+        })
+      )
       .subscribe({
         next: () => this.ehAutenticado.next(true),
-        error: () => this.ehAutenticado.next(false),
       });
   }
+  
 }

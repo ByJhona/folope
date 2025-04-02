@@ -1,22 +1,21 @@
-import {
-  HttpEvent,
-  HttpEventType,
-  HttpHandlerFn,
-  HttpRequest,
-} from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import { UsuarioService } from '../services/usuario.service';
+import { HttpEvent, HttpHandlerFn, HttpRequest, HttpResponse } from '@angular/common/http';
+import { catchError, Observable, of, throwError } from 'rxjs';
 
-export function logingInterceptor(
+export function NaoAutorizadoInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
-): Observable<HttpEvent<unknown>> {
-  let usuarioServ = inject(UsuarioService);
+): Observable<HttpEvent<any>> {
   return next(req).pipe(
-    tap((event) => {
-      if (event.type === HttpEventType.Response) {
+    catchError((erro) => {
+      if (erro.status === 403) {
+        console.warn('Ação específica para 403 - Não autorizado');
+        
+        // Retorna um HttpResponse válido para evitar erro de tipagem
+        return of(new HttpResponse({ body: { mensagem: 'Acesso negado' }, status: 403 }));
       }
+
+      console.error('Erro detectado:', erro); // Agora só loga se NÃO for 403
+      return throwError(() => erro);
     })
   );
 }

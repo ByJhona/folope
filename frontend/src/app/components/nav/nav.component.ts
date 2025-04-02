@@ -43,6 +43,10 @@ export class NavComponent {
     });
   }
 
+  ngOnInit(){
+    this.usuarioServ.obterUsuario()
+  }
+
   trocar() {
     this.pesquisar = !this.pesquisar;
   }
