@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { AutenticacaoService } from './services/autenticacao.service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,9 +12,10 @@ import { AutenticacaoService } from './services/autenticacao.service';
 })
 export class AppComponent {
   title = 'Folope';
-  constructor(private readonly autenticacaoUsuario: AutenticacaoService) {}
 
-  ngOnInit() {
-    this.autenticacaoUsuario.verificarAutenticado();
+  constructor(private readonly autenticacaoServ:AutenticacaoService){
+    this.autenticacaoServ.inicializarContextoAutenticacao()
   }
+
+  
 }

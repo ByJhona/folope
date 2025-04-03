@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { isPlatformBrowser } from '@angular/common';
+import { authCodeFlowConfig } from '../config/auth-config';
 
 @Injectable({
   providedIn: 'root',
@@ -10,31 +12,27 @@ export class AutenticacaoService {
   private readonly apiUrl: string = environment.apiUrl;
   ehAutenticado = new BehaviorSubject(false);
   ehAutenticado$ = this.ehAutenticado.asObservable();
-  constructor(private readonly httpClient: HttpClient) {
+  constructor(
+    private readonly oAuthServ: OAuthService,
+    @Inject(PLATFORM_ID) private readonly platformId: Object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.oAuthServ.configure(authCodeFlowConfig);
+    }
   }
 
-  login(identificador: string, senha: string): Observable<void> {
-    return this.httpClient.post<void>(
-      this.apiUrl + '/login',
-      { identificador: identificador, senha: senha },
-      { withCredentials: true }
-    );
+  inicializarContextoAutenticacao(){
+    if (isPlatformBrowser(this.platformId)) {
+      this.oAuthServ.loadDiscoveryDocument().then(() => this.oAuthServ.tryLogin())
+      
+    }
   }
 
-  verificarAutenticado(): void {
-    this.httpClient
-      .get<boolean>(this.apiUrl + '/usuario-autenticado', {
-        withCredentials: true,
-      })
-      .pipe(
-        catchError(() => {
-          this.ehAutenticado.next(false);
-          return of(false); // Evita que o Angular trate como erro
-        })
-      )
-      .subscribe({
-        next: () => this.ehAutenticado.next(true),
-      });
+
+
+  login(): void {
+    if (!this.oAuthServ.hasValidAccessToken()) {
+      this.oAuthServ.loadDiscoveryDocument().then(()=> this.oAuthServ.initLoginFlow())
+    }
   }
-  
 }

@@ -23,10 +23,5 @@ export class LoginComponent {
   submeterLogin() {
     const nome = this.loginServ.obterNome();
     const senha = this.loginServ.obterSenha();
-    this.autenticacaoServ.login(nome, senha).subscribe(() => {
-      this.router.navigate(['/home']);
-      this.autenticacaoServ.verificarAutenticado();
-      this.usuarioServ.obterUsuario();
-    });
   }
 }

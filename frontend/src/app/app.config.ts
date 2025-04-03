@@ -5,8 +5,10 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { NaoAutorizadoInterceptor } from './interceptors/loginInterceptor';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
+
 
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(),provideHttpClient(withFetch(), withInterceptors([NaoAutorizadoInterceptor])), provideAnimationsAsync()]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(),  provideOAuthClient(),provideHttpClient(withFetch(), withInterceptors([NaoAutorizadoInterceptor])), provideAnimationsAsync()]
 };

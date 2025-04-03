@@ -35,16 +35,7 @@ export class NavComponent {
     private readonly usuarioServ: UsuarioService,
     private readonly autenticacaoServ: AutenticacaoService
   ) {
-    this.usuarioServ.usuario$.subscribe((usuario) => {
-      this.usuario = usuario;
-    });
-    this.autenticacaoServ.ehAutenticado$.subscribe((estado:boolean) => {
-      this.ehAutenticado = estado;
-    });
-  }
 
-  ngOnInit(){
-    this.usuarioServ.obterUsuario()
   }
 
   trocar() {
@@ -53,7 +44,7 @@ export class NavComponent {
 
   login(click: boolean): void {
     if (click) {
-      this.router.navigate(['/login']);
+      this.autenticacaoServ.login();
     }
   }
 }

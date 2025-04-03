@@ -17,17 +17,17 @@ export class FilmeService {
   listarFilmes():Observable<FilmeDescoberta[]>{
   
 
-    return this.httpClient.get<FilmeDescoberta[]>(this.apiUrl+'/buscar');
+    return this.httpClient.get<FilmeDescoberta[]>(this.apiUrl+'/buscar', {withCredentials:true});
   }
 
   pesquisarFilmeTitulo(titulo:string, numPagina:number):Observable<FilmesResponse>{
-    return this.httpClient.get<FilmesResponse>(this.apiUrl+'/buscar/titulo?titulo='+titulo+"&pagina="+numPagina);
+    return this.httpClient.get<FilmesResponse>(this.apiUrl+'/buscar/titulo?titulo='+titulo+"&pagina="+numPagina, {withCredentials:true});
 
   }
 
   pesquisarFilmeId(id:number):Observable<Filme>{
   
-    return this.httpClient.get<Filme>(this.apiUrl+'/buscar/id?id='+id);
+    return this.httpClient.get<Filme>(this.apiUrl+'/buscar/id?id='+id, {withCredentials:true});
 
   }
 
